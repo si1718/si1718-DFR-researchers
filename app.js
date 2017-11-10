@@ -13,4 +13,7 @@ app.use('/api/users', UserController);
 var AuthController = require(__root + 'auth/AuthController');
 app.use('/api/auth', AuthController);
 
+var ResearcherController = require(__root + 'researcher/ResearcherController');
+app.use('/api/v1', ResearcherController);
+
 module.exports = app;
