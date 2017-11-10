@@ -18,10 +18,13 @@
   },
   "homepage": "https://github.com/si1718/si1718-dfr-researchers#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "helmet": "^3.9.0",
+    "jsonwebtoken": "^8.1.0",
     "mongodb": "^2.2.33",
+    "mongoose": "^4.13.1",
     "path": "^0.12.7"
   }
 }
