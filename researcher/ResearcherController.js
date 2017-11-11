@@ -5,12 +5,12 @@ var bodyParser = require('body-parser');
 var VerifyToken = require(__root + 'auth/VerifyToken');
 
 router.use(bodyParser.urlencoded({ extended: true }));
-var researcher = require('./Researcher');
+var researcherModel = require('./Researcher');
 
 /* Método GET que devuelve todos los investigadores */
 router.get('/', function (request, response) {
     console.log("INFO: New GET request to /researchers");
-    researcher.find({}, function (err, researchers) {
+    researcherModel.find({}, function (err, researchers) {
         
         if (err) {
             console.error('WARNING: Error getting data from DB');
@@ -26,7 +26,7 @@ router.get('/', function (request, response) {
 /* Método GET que devuelve todos los investigadores */
 router.get('/researchers', function (request, response) {
     console.log("INFO: New GET request to /researchers");
-    researcher.find({}, function (err, researchers) {
+    researcherModel.find({}, function (err, researchers) {
         
         if (err) {
             console.error('WARNING: Error getting data from DB');
@@ -47,7 +47,7 @@ router.get('/researchers/:rid', function (request, response) {
         response.sendStatus(400); // bad request
     } else {
         console.log("INFO: New GET request to /researchers/" + rid);
-        researcher.findOne({rid:rid}, function (err, researcher) {
+        researcherModel.findOne({rid:rid}, function (err, researcher) {
             if (err) {
                 console.error('WARNING: Error getting data from DB');
                 response.sendStatus(500); // internal server error
@@ -80,7 +80,7 @@ router.post('/researchers', function (request, response) {
             console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " is not well-formed, sending 422...");
             response.sendStatus(422); // unprocessable entity
         } else {
-            researcher.findOne({"rid": newResearcher.rid}, function (err, researcherAux) {
+            researcherModel.findOne({"rid": newResearcher.rid}, function (err, researcherAux) {
                 if (err) {
                     console.error('WARNING: Error getting data from DB');
                     response.sendStatus(500); // internal server error
@@ -91,7 +91,7 @@ router.post('/researchers', function (request, response) {
                     } else {
                         console.log("INFO: Adding researcher " + JSON.stringify(newResearcher, 2, null));
                         
-                        researcher.create({
+                        researcherModel.create({
                             rid: request.body.rid,
                             name: request.body.name,
                             orcid: request.body.orcid,
@@ -121,5 +121,92 @@ router.post('/researchers/:rid', function (request, response) {
     response.sendStatus(405); // method not allowed
 });
 
+
+
+/* Método PUT sobre un recurso para actualizar un investigador */
+router.put('/researchers/:rid', function (request, response) {
+    var updatedResearcher = request.body;
+    var rid = request.params.rid;
+    if (!updatedResearcher) {
+        console.log("WARNING: New PUT request to /researchers/ without researcher, sending 400...");
+        response.sendStatus(400); // bad request
+    } else {
+        console.log("INFO: New PUT request to /researchers/" + rid + " with data " + JSON.stringify(updatedResearcher, 2, null));
+        if (!updatedResearcher.name || !updatedResearcher.phone || !updatedResearcher.rid
+            || !updatedResearcher.group || !updatedResearcher.unit || !updatedResearcher.professionalSituation) {
+            console.log("WARNING: The researcher " + JSON.stringify(updatedResearcher, 2, null) + " is not well-formed, sending 422...");
+            response.sendStatus(422); // unprocessable entity
+        } else {
+            researcherModel.findOneAndUpdate({rid: rid}, updatedResearcher, function (err, researcher) {
+                if (err){
+                    console.error('WARNING: Error Modifying data from DB');
+                    return response.sendStatus(500); // internal server error
+                } else {
+                    if (researcher) {
+                        console.log("INFO: Modifying researcher with rid " + rid + " with data " + JSON.stringify(updatedResearcher, 2, null));
+                        response.sendStatus(200); // updated
+                    } else {
+                        console.log("WARNING: There are not any researcher with rid " + rid);
+                        response.sendStatus(404); // not found
+                    }
+                }
+            });
+        }
+    }
+});
+
+
+/* Método PUT sobre una collection de investigadores */
+router.put('/researchers', function (request, response) {
+    console.log("WARNING: New PUT request to /researchers, sending 405...");
+    response.sendStatus(405); // method not allowed
+});
+
+
+/* Método DELETE sobre una collection de investigadores */
+router.delete('/researchers', function (request, response) {
+    console.log("INFO: New DELETE request to /researchers");
+    researcherModel.remove({}, function (err, output) {
+        if (err) {
+            console.error('WARNING: Error removing data from DB');
+            response.sendStatus(500); // internal server error
+        } else {
+            if (output.result.n > 0) {
+                console.log("INFO: All the researchers (" + output + ") have been succesfully deleted, sending 204...");
+                response.sendStatus(204); // no content
+            } else {
+                console.log("WARNING: There are no researchers to delete");
+                response.sendStatus(404); // not found
+            }
+        }
+    });
+});
+
+
+/* Método DELETE sobre un investigador */
+router.delete('/researchers/:rid', function (request, response) {
+    var rid = request.params.rid;
+    if (!rid) {
+        console.log("WARNING: New DELETE request to /researchers/:rid without rid, sending 400...");
+        response.sendStatus(400); // bad request
+    } else {
+        console.log("INFO: New DELETE request to /researchers/" + rid);
+        researcherModel.findOneAndRemove({rid: rid}, function (err, output) {
+            if (err){
+                console.error('WARNING: Error removing data from DB');
+                return response.sendStatus(500); // internal server error
+            }else{
+                console.log("INFO: researchers removed: " + output);
+                if (output) {
+                    console.log("INFO: The researcher with rid " + rid + " has been succesfully deleted, sending 204...");
+                    response.sendStatus(204); // no content
+                } else {
+                    console.log("WARNING: There are no researchers to delete");
+                    response.sendStatus(404); // not found
+                }
+            }
+        });
+    }
+});
 
 module.exports = router;
