@@ -8,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 var researcherModel = require('./Researcher');
 
 /* Método GET que devuelve todos los investigadores */
-router.get('/', function (request, response) {
+router.get('/', VerifyToken, function (request, response) {
     console.log("INFO: New GET request to /researchers");
     researcherModel.find({}, function (err, researchers) {
         
@@ -24,7 +24,7 @@ router.get('/', function (request, response) {
 
 
 /* Método GET que devuelve todos los investigadores */
-router.get('/researchers', function (request, response) {
+router.get('/researchers', VerifyToken, function (request, response) {
     console.log("INFO: New GET request to /researchers");
     researcherModel.find({}, function (err, researchers) {
         
@@ -40,7 +40,7 @@ router.get('/researchers', function (request, response) {
 
 
 /* Método GET que devuelve todos los investigadores filtrado por rid */
-router.get('/researchers/:rid', function (request, response) {
+router.get('/researchers/:rid', VerifyToken, function (request, response) {
     var rid = request.params.rid;
     if (!rid) {
         console.log("WARNING: New GET request to /researchers/:rid without rid, sending 400...");
@@ -68,7 +68,7 @@ router.get('/researchers/:rid', function (request, response) {
 
 
 /* Método POST que inserta un investigador en una collection */
-router.post('/researchers', function (request, response) {
+router.post('/researchers', VerifyToken, function (request, response) {
     var newResearcher = request.body;
     if (!newResearcher) {
         console.log("WARNING: New POST request to /researchers/ without researcher, sending 400...");
@@ -115,7 +115,7 @@ router.post('/researchers', function (request, response) {
 
 
 /* Método POST sobre un recurso */
-router.post('/researchers/:rid', function (request, response) {
+router.post('/researchers/:rid', VerifyToken, function (request, response) {
     var rid = request.params.rid;
     console.log("WARNING: New POST request to /researchers/" + rid + ", sending 405...");
     response.sendStatus(405); // method not allowed
@@ -124,7 +124,7 @@ router.post('/researchers/:rid', function (request, response) {
 
 
 /* Método PUT sobre un recurso para actualizar un investigador */
-router.put('/researchers/:rid', function (request, response) {
+router.put('/researchers/:rid', VerifyToken, function (request, response) {
     var updatedResearcher = request.body;
     var rid = request.params.rid;
     if (!updatedResearcher) {
@@ -157,14 +157,14 @@ router.put('/researchers/:rid', function (request, response) {
 
 
 /* Método PUT sobre una collection de investigadores */
-router.put('/researchers', function (request, response) {
+router.put('/researchers', VerifyToken, function (request, response) {
     console.log("WARNING: New PUT request to /researchers, sending 405...");
     response.sendStatus(405); // method not allowed
 });
 
 
 /* Método DELETE sobre una collection de investigadores */
-router.delete('/researchers', function (request, response) {
+router.delete('/researchers', VerifyToken, function (request, response) {
     console.log("INFO: New DELETE request to /researchers");
     researcherModel.remove({}, function (err, output) {
         if (err) {
@@ -184,7 +184,7 @@ router.delete('/researchers', function (request, response) {
 
 
 /* Método DELETE sobre un investigador */
-router.delete('/researchers/:rid', function (request, response) {
+router.delete('/researchers/:rid', VerifyToken, function (request, response) {
     var rid = request.params.rid;
     if (!rid) {
         console.log("WARNING: New DELETE request to /researchers/:rid without rid, sending 400...");
