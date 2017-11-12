@@ -67,6 +67,27 @@ router.get('/researchers/:rid', VerifyToken, function (request, response) {
 });
 
 
+/* Método GET que busca todos los investigadores posibles dado nombre y apellidos */
+router.get('/search', VerifyToken, function (request, response) {
+    var name = request.param('n');
+    if (!name) {
+        console.log("WARNING: New GET request to /search?n= without n, sending 400...");
+        response.sendStatus(400); // bad request
+    } else {
+        console.log("INFO: New GET request to /search?n=" + name);
+        researcherModel.find({name: { $regex: '.*' + name + '.*', $options: 'i' } }, function (err, researchers) {
+            if (err) {
+                console.error('WARNING: Error getting data from DB');
+                response.sendStatus(500); // internal server error
+            } else {
+                console.log("INFO: Sending researchers: " + JSON.stringify(researchers, 2, null));
+                response.send(researchers);
+            }
+        });
+    }
+});
+
+
 /* Método POST que inserta un investigador en una collection */
 router.post('/researchers', VerifyToken, function (request, response) {
     var newResearcher = request.body;
