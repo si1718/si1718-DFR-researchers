@@ -8,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 var researcherModel = require('./Researcher');
 
 /* Método GET que devuelve todos los investigadores */
-router.get('/', VerifyToken, function (request, response) {
+router.get('/', /* VerifyToken,*/ function (request, response) {
     console.log("INFO: New GET request to /researchers");
     researcherModel.find({}, function (err, researchers) {
         
@@ -24,7 +24,7 @@ router.get('/', VerifyToken, function (request, response) {
 
 
 /* Método GET que devuelve todos los investigadores */
-router.get('/researchers', VerifyToken, function (request, response) {
+router.get('/researchers', /* VerifyToken,*/ function (request, response) {
     console.log("INFO: New GET request to /researchers");
     researcherModel.find({}, function (err, researchers) {
         
@@ -40,7 +40,7 @@ router.get('/researchers', VerifyToken, function (request, response) {
 
 
 /* Método GET que devuelve todos los investigadores filtrado por idResearcher */
-router.get('/researchers/:idResearcher', VerifyToken, function (request, response) {
+router.get('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
     var idResearcher = request.params.idResearcher;
     if (!idResearcher) {
         console.log("WARNING: New GET request to /researchers/:idResearcher without idResearcher, sending 400...");
@@ -68,7 +68,7 @@ router.get('/researchers/:idResearcher', VerifyToken, function (request, respons
 
 
 /* Método GET que busca todos los investigadores posibles dado nombre y apellidos */
-router.get('/search', VerifyToken, function (request, response) {
+router.get('/search', /* VerifyToken,*/ function (request, response) {
     var name = request.param('n');
     if (!name) {
         console.log("WARNING: New GET request to /search?n= without n, sending 400...");
@@ -89,19 +89,18 @@ router.get('/search', VerifyToken, function (request, response) {
 
 
 /* Método POST que inserta un investigador en una collection */
-router.post('/researchers', VerifyToken, function (request, response) {
+router.post('/researchers', /* VerifyToken,*/ function (request, response) {
     var newResearcher = request.body;
     if (!newResearcher) {
         console.log("WARNING: New POST request to /researchers/ without researcher, sending 400...");
         response.sendStatus(400); // bad request
     } else {
         console.log("INFO: New POST request to /researchers with body: " + JSON.stringify(newResearcher, 2, null));
-        if (!newResearcher.name || !newResearcher.phone || !newResearcher.group || !newResearcher.unit 
-            || !newResearcher.professionalSituation) {
+        if (!newResearcher.name || !newResearcher.idResearcher) {
             console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " is not well-formed, sending 422...");
             response.sendStatus(422); // unprocessable entity
         } else {
-            researcherModel.findOne({"idResearcher": newResearcher.orcid}, function (err, researcherAux) {
+            researcherModel.findOne({idResearcher: newResearcher.orcid}, function (err, researcherAux) {
                 if (err) {
                     console.error('WARNING: Error getting data from DB');
                     response.sendStatus(500); // internal server error
@@ -117,7 +116,7 @@ router.post('/researchers', VerifyToken, function (request, response) {
                             name: request.body.name,
                             phone: request.body.phone,
                             orcid: request.body.orcid,
-                            researcherID: request.body.researcherID,
+                            researcherId: request.body.researcherId,
                             investigationLink: request.body.investigationLink,
                             group: request.body.group,
                             unit: request.body.unit,
@@ -137,16 +136,15 @@ router.post('/researchers', VerifyToken, function (request, response) {
 
 
 /* Método POST sobre un recurso */
-router.post('/researchers/:idResearcher', VerifyToken, function (request, response) {
+router.post('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
     var idResearcher = request.params.idResearcher;
     console.log("WARNING: New POST request to /researchers/" + idResearcher + ", sending 405...");
     response.sendStatus(405); // method not allowed
 });
 
 
-
 /* Método PUT sobre un recurso para actualizar un investigador */
-router.put('/researchers/:idResearcher', VerifyToken, function (request, response) {
+router.put('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
     var updatedResearcher = request.body;
     var idResearcher = request.params.idResearcher;
     if (!updatedResearcher) {
@@ -154,8 +152,7 @@ router.put('/researchers/:idResearcher', VerifyToken, function (request, respons
         response.sendStatus(400); // bad request
     } else {
         console.log("INFO: New PUT request to /researchers/" + idResearcher + " with data " + JSON.stringify(updatedResearcher, 2, null));
-        if (!updatedResearcher.name || !updatedResearcher.phone || !updatedResearcher.idResearcher
-            || !updatedResearcher.group || !updatedResearcher.unit || !updatedResearcher.professionalSituation) {
+        if (!updatedResearcher.name || !updatedResearcher.idResearcher) {
             console.log("WARNING: The researcher " + JSON.stringify(updatedResearcher, 2, null) + " is not well-formed, sending 422...");
             response.sendStatus(422); // unprocessable entity
         } else {
@@ -179,14 +176,14 @@ router.put('/researchers/:idResearcher', VerifyToken, function (request, respons
 
 
 /* Método PUT sobre una collection de investigadores */
-router.put('/researchers', VerifyToken, function (request, response) {
+router.put('/researchers', /* VerifyToken,*/ function (request, response) {
     console.log("WARNING: New PUT request to /researchers, sending 405...");
     response.sendStatus(405); // method not allowed
 });
 
 
 /* Método DELETE sobre una collection de investigadores */
-router.delete('/researchers', VerifyToken, function (request, response) {
+router.delete('/researchers', /* VerifyToken,*/ function (request, response) {
     console.log("INFO: New DELETE request to /researchers");
     researcherModel.remove({}, function (err, output) {
         if (err) {
@@ -206,7 +203,7 @@ router.delete('/researchers', VerifyToken, function (request, response) {
 
 
 /* Método DELETE sobre un investigador */
-router.delete('/researchers/:idResearcher', VerifyToken, function (request, response) {
+router.delete('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
     var idResearcher = request.params.idResearcher;
     if (!idResearcher) {
         console.log("WARNING: New DELETE request to /researchers/:idResearcher without idResearcher, sending 400...");

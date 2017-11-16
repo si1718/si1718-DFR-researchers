@@ -10,29 +10,19 @@ var ResearcherSchema = new mongoose.Schema({
     required: [true, 'Name required']
   },
   phone: {
-    type: String,
-    validate: {
-      validator: function(v) {
-        return /^[9|6]{1}([\d]{2}[-]*){3}[\d]{2}$/.test(v);
-      },
-      message: '{VALUE} is not a valid phone number!'
-    },
-    required: [true, 'Phone number required']
+    type: String
   },
   orcid: String,
-  researcherID: String,
+  researcherId: String,
   investigationLink: String,
   group: {
-    type: String,
-    required: [true, 'Group required']
+    type: String
   },
   unit: {
-    type: String,
-    required: [true, 'Departament/Unit required']
+    type: String
   },
   professionalSituation: {
-    type: String,
-    required: [true, 'Professional Situation required']
+    type: String
   }
 });
 mongoose.model('Researcher', ResearcherSchema);
