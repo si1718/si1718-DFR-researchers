@@ -8,22 +8,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 var researcherModel = require('./Researcher');
 
 /* Método GET que devuelve todos los investigadores */
-router.get('/', /* VerifyToken,*/ function (request, response) {
-    console.log("INFO: New GET request to /researchers");
-    researcherModel.find({}, function (err, researchers) {
-        
-        if (err) {
-            console.error('WARNING: Error getting data from DB');
-            response.sendStatus(500); // internal server error
-        } else {
-            console.log("INFO: Sending researchers: " + JSON.stringify(researchers, 2, null));
-            response.send(researchers);
-        }
-    });
-});
-
-
-/* Método GET que devuelve todos los investigadores */
 router.get('/researchers', /* VerifyToken,*/ function (request, response) {
     console.log("INFO: New GET request to /researchers");
     researcherModel.find({}, function (err, researchers) {
@@ -54,9 +38,9 @@ router.get('/researchers/:idResearcher', /* VerifyToken,*/ function (request, re
             } else {
                
                 if (researcher) {
-                    var research = researcher; //since we expect to have exactly ONE researcher with this idResearcher
-                    console.log("INFO: Sending researcher: " + JSON.stringify(research, 2, null));
-                    response.send(research);
+                    //since we expect to have exactly ONE researcher with this idResearcher
+                    console.log("INFO: Sending researcher: " + JSON.stringify(researcher, 2, null));
+                    response.send(researcher);
                 } else {
                     console.log("WARNING: There are not any research with idResearcher " + idResearcher);
                     response.sendStatus(404); // not found
@@ -106,7 +90,7 @@ router.post('/researchers', /* VerifyToken,*/ function (request, response) {
                     response.sendStatus(500); // internal server error
                 } else {
                     if (researcherAux) {
-                        console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " already extis, sending 409...");
+                        console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " already exists, sending 409...");
                         response.sendStatus(409); // conflict
                     } else {
                         console.log("INFO: Adding researcher " + JSON.stringify(newResearcher, 2, null));
@@ -117,9 +101,9 @@ router.post('/researchers', /* VerifyToken,*/ function (request, response) {
                             phone: request.body.phone,
                             orcid: request.body.orcid,
                             researcherId: request.body.researcherId,
-                            investigationLink: request.body.investigationLink,
+                            link: request.body.link,
                             group: request.body.group,
-                            unit: request.body.unit,
+                            department: request.body.department,
                             professionalSituation: request.body.professionalSituation
                             
                         }, 

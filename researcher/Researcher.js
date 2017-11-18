@@ -2,8 +2,7 @@ var mongoose = require('mongoose');
 var ResearcherSchema = new mongoose.Schema({  
   idResearcher: {
     type: String,
-    required: [true, 'idResearcher required'],
-    unique: true
+    required: [true, 'idResearcher required']
   },
   name: {
     type: String,
@@ -14,11 +13,11 @@ var ResearcherSchema = new mongoose.Schema({
   },
   orcid: String,
   researcherId: String,
-  investigationLink: String,
+  link: String,
   group: {
     type: String
   },
-  unit: {
+  department: {
     type: String
   },
   professionalSituation: {
