@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var db = require('./db');
+var path = require('path');
 global.__root   = __dirname + '/'; 
 
 app.get('/api', function (req, res) {
@@ -15,5 +16,8 @@ app.use('/api/auth', AuthController);
 
 var ResearcherController = require(__root + 'researcher/ResearcherController');
 app.use('/api/v1', ResearcherController);
+
+
+app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
