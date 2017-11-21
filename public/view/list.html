@@ -1,0 +1,25 @@
+<h2>Researchers</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input ng-model="newResearcher.name"/></td>
+            <td><input ng-model="newResearcher.phone"/></td>
+            <td>
+                <button class="btn btn-primary" ng-click="addResearcher()">Add Researcher</button>
+            </td>
+        </tr>
+        <tr ng-repeat="researcher in researchers">
+            <td>{{researcher.name}}</td>
+            <td>{{researcher.phone}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteResearcher(researcher.name)">Delete researcher</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
