@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-
 var VerifyToken = require(__root + 'auth/VerifyToken');
 
-router.use(bodyParser.urlencoded({ extended: true }));
+/* configura dentro de express el middleware bodyparser json */
+//router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+
 var researcherModel = require('./Researcher');
 
 /* Método GET que devuelve todos los investigadores */
@@ -80,7 +82,7 @@ router.post('/researchers', /* VerifyToken,*/ function (request, response) {
         response.sendStatus(400); // bad request
     } else {
         console.log("INFO: New POST request to /researchers with body: " + JSON.stringify(newResearcher, 2, null));
-        if (!newResearcher.name || !newResearcher.idResearcher) {
+        if (!newResearcher.name || !newResearcher.orcid) {
             console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " is not well-formed, sending 422...");
             response.sendStatus(422); // unprocessable entity
         } else {

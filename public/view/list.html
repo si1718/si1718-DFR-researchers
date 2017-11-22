@@ -1,15 +1,110 @@
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+            <div class="col-md-8 col-xs-12">
+                <h2 class="modal-title" id="editModalLabel">Edit researcher</h2>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="nameInput">Name:</label>
+                    <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" ng-model="updateResearcher.name">
+                    <small id="nameHelp" class="form-text text-muted">Name required.</small>
+                 </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="phoneInput">Phone:</label>
+                    <input type="text" class="form-control" id="phoneInput" placeholder="Enter phone" ng-model="updateResearcher.phone">
+                 </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="orcidInput">ORCID:</label>
+                    <input type="text" class="form-control" id="orcidInput" aria-describedby="orcidHelp" ng-model="updateResearcher.orcid">
+                    <small id="orcidHelp" class="form-text text-muted">ORCID required.</small>
+                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="researcherIdInput">ResearcherId:</label>
+                    <input type="text" class="form-control" id="researcherIdInput" placeholder="Enter researcherId" ng-model="updateResearcher.researcherId">
+                 </div>
+            </div>
+            <div class="col-md-8 col-xs-12">
+                 <div class="form-group">
+                    <label for="linkInput">External Link:</label>
+                    <input type="text" class="form-control" id="linkInput" placeholder="Enter link" ng-model="updateResearcher.link">
+                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="groupInput">Group:</label>
+                    <input type="text" class="form-control" id="groupInput" placeholder="Enter group" ng-model="updateResearcher.group">
+                 </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="departmentInput">Department:</label>
+                    <input type="text" class="form-control" id="phoneInput" placeholder="Enter department" ng-model="updateResearcher.department">
+                 </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                 <div class="form-group">
+                    <label for="professionalSituationInput">Professional Situation:</label>
+                    <input type="text" class="form-control" id="professionalSituationInput" placeholder="Enter professional situation" ng-model="updateResearcher.professionalSituation">
+                 </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="editResearcher(updateResearcher.idResearcher)">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h2>Researchers</h2>
 <table class="table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Phone</th>
+            <th>ORCID</th>
+            <th>ResearcherId</th>
+            <th>External Link</th>
+            <th>Group</th>
+            <th>Department</th>
+            <th>Professional Situation</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><input ng-model="newResearcher.name"/></td>
             <td><input ng-model="newResearcher.phone"/></td>
+            <td><input ng-model="newResearcher.orcid"/></td>
+            <td><input ng-model="newResearcher.researcherId"/></td>
+            <td><input ng-model="newResearcher.link"/></td>
+            <td><input ng-model="newResearcher.group"/></td>
+            <td><input ng-model="newResearcher.department"/></td>
+            <td><input ng-model="newResearcher.professionalSituation"/></td>
             <td>
                 <button class="btn btn-primary" ng-click="addResearcher()">Add Researcher</button>
             </td>
@@ -17,8 +112,15 @@
         <tr ng-repeat="researcher in researchers">
             <td>{{researcher.name}}</td>
             <td>{{researcher.phone}}</td>
+            <td>{{researcher.orcid}}</td>
+            <td>{{researcher.researcherId}}</td>
+            <td>{{researcher.link}}</td>
+            <td>{{researcher.group}}</td>
+            <td>{{researcher.department}}</td>
+            <td>{{researcher.professionalSituation}}</td>
             <td>
-                <button class="btn btn-danger" ng-click="deleteResearcher(researcher.name)">Delete researcher</button>
+                <button class="btn btn-danger" ng-click="deleteResearcher(researcher.idResearcher)">Delete</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" ng-click="openEditModal(researcher.idResearcher)">Edit</button>
             </td>
         </tr>
     </tbody>
