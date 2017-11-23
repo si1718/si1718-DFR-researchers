@@ -3,5 +3,7 @@ angular.module("ResearcherManagerApp")
         
     /* Almaceno el campo por el que se desea buscar. */
     $scope.searchTextBox="";
+    
+    $scope.sectionTitle = "Search Engine";
 
 }]);

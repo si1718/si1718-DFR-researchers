@@ -21,8 +21,16 @@ router.get('/researchers', /* VerifyToken,*/ function (request, response) {
     var param = request.query.search;
     var query = {};
     if (param){
-        query = { $or:[ {'name':param}, {'phone':param}, {'orcid':param},
-        {'researcherId':param}, {'link':param}, {'idGroup':param}, {'idDepartment':param}, {'professionalSituation':param} ]};
+        query = { $or:[ 
+            {'name':{ $regex: '.*' + param + '.*', $options: 'i' }}, 
+            {'phone':{ $regex: '.*' + param + '.*', $options: 'i' }}, 
+            {'orcid':{ $regex: '.*' + param + '.*', $options: 'i' }},
+            {'researcherId':{ $regex: '.*' + param + '.*', $options: 'i' }}, 
+            {'link':{ $regex: '.*' + param + '.*', $options: 'i' }}, 
+            {'idGroup':{ $regex: '.*' + param + '.*', $options: 'i' }}, 
+            {'idDepartment':{ $regex: '.*' + param + '.*', $options: 'i' }}, 
+            {'professionalSituation':{ $regex: '.*' + param + '.*', $options: 'i' }} 
+        ]};
     }
     
     console.log("INFO: New GET request to /researchers");

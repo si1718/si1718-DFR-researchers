@@ -11,6 +11,8 @@ angular.module("ResearcherManagerApp")
                     $scope.researchers = response.data;
             });
             
+            $scope.sectionTitle = "List of researchers";
+            
             $scope.newResearcher={
                 name : "",
                 phone : "",
