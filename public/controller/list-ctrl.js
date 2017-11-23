@@ -1,13 +1,15 @@
 angular.module("ResearcherManagerApp")
-   .controller("ListCtrl", ["$scope", "$http", function($scope, $http) {
+   .controller("ListCtrl", ["$scope", "$http", "$routeParams", function($scope, $http, $routeParams) {
         
         /* Obtiene todos los investigadores para mostrarlos en la tabla y refresca la tabla en cada acción */
         function refresh(){
-            $http
-                .get("/api/v1/researchers")
-                .then(function(response) {
+            
+            $http({
+                url: "/api/v1/researchers",
+                params: $routeParams
+            }).then(function(response) {
                     $scope.researchers = response.data;
-                });
+            });
             
             $scope.newResearcher={
                 name : "",
@@ -15,8 +17,8 @@ angular.module("ResearcherManagerApp")
                 orcid : "",
                 researcherId : "",
                 link : "",
-                group : "",
-                department : "",
+                idGroup : "",
+                idDepartment : "",
                 professionalSituation : ""
             }
             
@@ -27,8 +29,8 @@ angular.module("ResearcherManagerApp")
                 orcid : "",
                 researcherId : "",
                 link : "",
-                group : "",
-                department : "",
+                idGroup : "",
+                idDepartment : "",
                 professionalSituation : ""
             }
         }

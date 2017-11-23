@@ -14,10 +14,10 @@ var ResearcherSchema = new mongoose.Schema({
   orcid: String,
   researcherId: String,
   link: String,
-  group: {
+  idGroup: {
     type: String
   },
-  department: {
+  idDepartment: {
     type: String
   },
   professionalSituation: {

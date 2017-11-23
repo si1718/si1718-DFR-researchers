@@ -55,13 +55,13 @@
             <div class="col-md-4 col-xs-12">
                  <div class="form-group">
                     <label for="groupInput">Group:</label>
-                    <input type="text" class="form-control" id="groupInput" placeholder="Enter group" ng-model="updateResearcher.group">
+                    <input type="text" class="form-control" id="groupInput" placeholder="Enter group" ng-model="updateResearcher.idGroup">
                  </div>
             </div>
             <div class="col-md-4 col-xs-12">
                  <div class="form-group">
                     <label for="departmentInput">Department:</label>
-                    <input type="text" class="form-control" id="phoneInput" placeholder="Enter department" ng-model="updateResearcher.department">
+                    <input type="text" class="form-control" id="phoneInput" placeholder="Enter department" ng-model="updateResearcher.idDepartment">
                  </div>
             </div>
             <div class="col-md-4 col-xs-12">
@@ -113,8 +113,8 @@
             <td><input ng-model="newResearcher.orcid"/></td>
             <td><input ng-model="newResearcher.researcherId"/></td>
             <td><input ng-model="newResearcher.link"/></td>
-            <td><input ng-model="newResearcher.group"/></td>
-            <td><input ng-model="newResearcher.department"/></td>
+            <td><input ng-model="newResearcher.idGroup"/></td>
+            <td><input ng-model="newResearcher.idDepartment"/></td>
             <td><input ng-model="newResearcher.professionalSituation"/></td>
             <td>
                 <button class="btn btn-primary" ng-click="addResearcher()">Add Researcher</button>
@@ -126,8 +126,8 @@
             <td>{{researcher.orcid}}</td>
             <td>{{researcher.researcherId}}</td>
             <td>{{researcher.link}}</td>
-            <td>{{researcher.group}}</td>
-            <td>{{researcher.department}}</td>
+            <td>{{researcher.idGroup}}</td>
+            <td>{{researcher.idDepartment}}</td>
             <td>{{researcher.professionalSituation}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteResearcher(researcher.idResearcher)">Delete</button>

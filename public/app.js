@@ -4,12 +4,21 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
         //Aqui se ejecuta el código tras cargar la aplicación.
         $routeProvider
             .when("/",{
+                templateUrl: "/view/searchEngine.html",
+                controller : "SearchEngineCtrl"
+            }).when("/researchers",{
                 templateUrl: "/view/list.html",
-                controller : "ListCtrl"
-            }).when("/researcher/:name",{
-                templateUrl: "/view/edit.html",
-                controller : "EditCtrl"
+                controller : "ListCtrl",
+                
+            }).when("/researchers/:search",{
+                templateUrl: "/view/list.html",
+                controller : "ListCtrl",
+                
             });
+            
+        $routeProvider.otherwise({
+            redirectTo: '/'
+        }); 
         
         console.log("App Initialized");            
         

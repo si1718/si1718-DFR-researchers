@@ -11,8 +11,20 @@ var researcherModel = require('./Researcher');
 
 /* Método GET que devuelve todos los investigadores */
 router.get('/researchers', /* VerifyToken,*/ function (request, response) {
+    
+    var param = request.query.search;
+    
+    var query = { $or:[ {'name':param}, {'phone':param}, {'orcid':param},
+    {'researcherId':param}, {'link':param}, {'idGroup':param}, {'idDepartment':param}, {'professionalSituation':param} ]};
+
+    /*for (var key in request.query) {
+        if (request.query.hasOwnProperty(key)) {
+            query[key] = { $regex: '.*' + request.query[key] + '.*', $options: 'i' };
+        }
+    }*/
+    
     console.log("INFO: New GET request to /researchers");
-    researcherModel.find({}, function (err, researchers) {
+    researcherModel.find(query, function (err, researchers) {
         
         if (err) {
             console.error('WARNING: Error getting data from DB');
@@ -53,27 +65,6 @@ router.get('/researchers/:idResearcher', /* VerifyToken,*/ function (request, re
 });
 
 
-/* Método GET que busca todos los investigadores posibles dado nombre y apellidos */
-router.get('/search', /* VerifyToken,*/ function (request, response) {
-    var name = request.param('n');
-    if (!name) {
-        console.log("WARNING: New GET request to /search?n= without n, sending 400...");
-        response.sendStatus(400); // bad request
-    } else {
-        console.log("INFO: New GET request to /search?n=" + name);
-        researcherModel.find({name: { $regex: '.*' + name + '.*', $options: 'i' } }, function (err, researchers) {
-            if (err) {
-                console.error('WARNING: Error getting data from DB');
-                response.sendStatus(500); // internal server error
-            } else {
-                console.log("INFO: Sending researchers: " + JSON.stringify(researchers, 2, null));
-                response.send(researchers);
-            }
-        });
-    }
-});
-
-
 /* Método POST que inserta un investigador en una collection */
 router.post('/researchers', /* VerifyToken,*/ function (request, response) {
     var newResearcher = request.body;
@@ -104,8 +95,8 @@ router.post('/researchers', /* VerifyToken,*/ function (request, response) {
                             orcid: request.body.orcid,
                             researcherId: request.body.researcherId,
                             link: request.body.link,
-                            group: request.body.group,
-                            department: request.body.department,
+                            idGroup: request.body.idGroup,
+                            idDepartment: request.body.idDepartment,
                             professionalSituation: request.body.professionalSituation
                             
                         }, 
