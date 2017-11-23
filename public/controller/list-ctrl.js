@@ -54,8 +54,11 @@ angular.module("ResearcherManagerApp")
                 .then(function(response) {
                     refresh();
                     $scope.openEditModal(idResearcher);
+                    $scope.errorsUpdate = false;
+                    $scope.successUpdate = true;
                 }, function(error){
-                    alert(error.data);
+                    $scope.errorsUpdate = true;
+                    $scope.successUpdate = false;
                 });
             
         }
@@ -91,6 +94,12 @@ angular.module("ResearcherManagerApp")
                     $scope.updateResearcher = response.data;
                 });
                 
+        }
+        
+        /* Cierra el modal y elimina el mensaje de información existente que hubiese */
+        $scope.closeEditModal = function (){
+            $scope.errorsUpdate = false;
+            $scope.successUpdate = false;
         }
 
         refresh();

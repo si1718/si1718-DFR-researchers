@@ -71,9 +71,20 @@
                  </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div ng-if="errorsUpdate" class="alert alert-danger">
+                  <strong>Error!</strong> Please check all the fields. Thank you so much.
+                </div>
+                
+                <div ng-if="successUpdate" class="alert alert-success">
+                  <strong>Success!</strong> Updated successfully.
+                </div> 
+            </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" ng-click="closeEditModal()" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" ng-click="editResearcher(updateResearcher.idResearcher)">Save changes</button>
       </div>
     </div>
