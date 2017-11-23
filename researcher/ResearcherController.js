@@ -12,16 +12,18 @@ var researcherModel = require('./Researcher');
 /* Método GET que devuelve todos los investigadores */
 router.get('/researchers', /* VerifyToken,*/ function (request, response) {
     
-    var param = request.query.search;
-    
-    var query = { $or:[ {'name':param}, {'phone':param}, {'orcid':param},
-    {'researcherId':param}, {'link':param}, {'idGroup':param}, {'idDepartment':param}, {'professionalSituation':param} ]};
-
     /*for (var key in request.query) {
         if (request.query.hasOwnProperty(key)) {
             query[key] = { $regex: '.*' + request.query[key] + '.*', $options: 'i' };
         }
     }*/
+    
+    var param = request.query.search;
+    var query = {};
+    if (param){
+        query = { $or:[ {'name':param}, {'phone':param}, {'orcid':param},
+        {'researcherId':param}, {'link':param}, {'idGroup':param}, {'idDepartment':param}, {'professionalSituation':param} ]};
+    }
     
     console.log("INFO: New GET request to /researchers");
     researcherModel.find(query, function (err, researchers) {
