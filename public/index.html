@@ -24,6 +24,32 @@
         <script type="text/javascript" src="app.js"></script>
         <script type="text/javascript" src="/controller/list-ctrl.js"></script>
         <script type="text/javascript" src="/controller/search-ctrl.js"></script>
+        
+        <script src="https://cdn.auth0.com/js/lock/10.20/lock.min.js"></script>
+        <script>
+          var clientId = 'AfeCgav197fRDsj7icMAxTM7-n5N420h';
+          var domain = 'si1718-dfr-researchers.eu.auth0.com';
+          // Instantiate Lock - without custom options
+          var lock = new Auth0Lock(clientId, domain);
+          
+          // Listen for the authenticated event and get profile
+          lock.on("authenticated", function(authResult) {
+            lock.getUserInfo(authResult.accessToken, function(error, profile) {
+              if (error) {
+                // Handle error
+                return;
+              }
+          
+              // Save token and profile locally
+              localStorage.setItem("accessToken", authResult.accessToken);
+              localStorage.setItem("profile", JSON.stringify(profile));
+          
+              // Update DOM
+            });
+          });
+          
+          
+        </script>
     </head>
     
     <body id="page-top">
@@ -38,6 +64,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1">
+              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-info" onclick="lock.show();">Login</button>
+            </li>
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Search engine</a>
             </li>
