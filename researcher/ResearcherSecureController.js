@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var researcherModel = require('./Researcher');
 var jwt = require('express-jwt');
 var jwks = require('jwks-rsa');
-var jwtAuthz = require('express-jwt-authz');
-var researcherModel = require('./Researcher');
+
+/* configura dentro de express el middleware bodyparser json */
+router.use(bodyParser.json());
 
 /* Create middleware for checking the JWT */
-var checkScopes = jwtAuthz(["read:messages"]);
 var jwtCheck = jwt({
     secret: jwks.expressJwtSecret({
         cache: true,
@@ -19,9 +20,6 @@ var jwtCheck = jwt({
     issuer: "https://si1718-dfr-researchers.eu.auth0.com/",
     algorithms: ['RS256']
 });
-
-/* configura dentro de express el middleware bodyparser json */
-router.use(bodyParser.json());
 
 /* Método GET que devuelve todos los investigadores */
 router.get('/researchers', jwtCheck, function (request, response) {

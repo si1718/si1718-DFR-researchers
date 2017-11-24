@@ -9,16 +9,12 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
             }).when("/researchers",{
                 templateUrl: "/view/list.html",
                 controller : "ListCtrl",
-                
             }).when("/researchers/:search",{
                 templateUrl: "/view/list.html",
                 controller : "ListCtrl",
-                
-            });
-            
-        $routeProvider.otherwise({
-            redirectTo: '/'
-        }); 
+            }).otherwise({
+                redirectTo: '/'
+            }); 
         
         console.log("App Initialized");            
         
