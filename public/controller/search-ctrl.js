@@ -5,5 +5,13 @@ angular.module("ResearcherManagerApp")
     $scope.searchTextBox="";
     
     $scope.sectionTitle = "Search Engine";
+    
+    if (localStorage.getItem('accessToken') != 'null'){
+        $scope.login = false;
+        $scope.logout = true;
+    }else{
+        $scope.login = true;
+        $scope.logout = false;
+    }
 
 }]);

@@ -35,7 +35,7 @@
           var domain = 'si1718-dfr-researchers.eu.auth0.com';
           var lock = new Auth0Lock(clientId, domain, {
             auth: {
-              redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/secure/',
+              redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/',
               //responseType: 'code',
               params: {
                   responseType: 'id_token token',
@@ -74,16 +74,20 @@
             });
           });
           
+          function login(){
+            lock.show();
+          }
+          
           function logout(){
-              lock.logout({
-                returnTo: "https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/"
-              });
-              
-              // Reset token
-              localStorage.setItem("accessToken", null);
-              //localStorage.setItem('idToken', null);
-              
-              lock.logout();
+            lock.logout({
+              returnTo: "https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/"
+            });
+            
+            // Reset token
+            localStorage.setItem("accessToken", null);
+            //localStorage.setItem('idToken', null);
+            
+            lock.logout();
           }
         </script>
     </head>
@@ -101,10 +105,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item mx-0 mx-lg-1">
-              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-info" id="login" onclick="lock.show();">Login</button>
+              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-info" onclick="login();">Login</button>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-warning hide" id="logout" onclick="logout();">Logout</button>
+              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-warning" onclick="logout();">Logout</button>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#!/secure">Secure</a>
