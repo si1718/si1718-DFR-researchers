@@ -6,13 +6,34 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
             .when("/",{
                 templateUrl: "/view/searchEngine.html",
                 controller : "SearchEngineCtrl"
-            }).when("/researchers",{
+            })
+            
+            .when("/researchers",{
                 templateUrl: "/view/list.html",
-                controller : "ListCtrl",
-            }).when("/researchers/:search",{
+                controller : "ListCtrl"
+            })
+            
+            .when("/researchers/:search",{
                 templateUrl: "/view/list.html",
-                controller : "ListCtrl",
-            }).otherwise({
+                controller : "ListCtrl"
+            })
+            
+            .when("/secure",{
+                templateUrl: "/view/searchEngine-secure.html",
+                controller : "SearchEngineCtrl"
+            })
+            
+            .when("/secure/researchers",{
+                templateUrl: "/view/list.html",
+                controller : "ListSecureCtrl"
+            })
+            
+            .when("/secure/researchers/:search",{
+                templateUrl: "/view/list.html",
+                controller : "ListSecureCtrl"
+            })
+            
+            .otherwise({
                 redirectTo: '/'
             }); 
         

@@ -1,22 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-
-/* configura dentro de express el middleware bodyparser json */
-//router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
-
 var researcherModel = require('./Researcher');
 
+/* configura dentro de express el middleware bodyparser json */
+router.use(bodyParser.json());
+
 /* Método GET que devuelve todos los investigadores */
-router.get('/researchers', /* VerifyToken,*/ function (request, response) {
-    
-    /*for (var key in request.query) {
-        if (request.query.hasOwnProperty(key)) {
-            query[key] = { $regex: '.*' + request.query[key] + '.*', $options: 'i' };
-        }
-    }*/
-    
+router.get('/researchers', function (request, response) {
     var param = request.query.search;
     var query = {};
     if (param){
@@ -47,7 +38,7 @@ router.get('/researchers', /* VerifyToken,*/ function (request, response) {
 
 
 /* Método GET que devuelve todos los investigadores filtrado por idResearcher */
-router.get('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
+router.get('/researchers/:idResearcher', function (request, response) {
     var idResearcher = request.params.idResearcher;
     if (!idResearcher) {
         console.log("WARNING: New GET request to /researchers/:idResearcher without idResearcher, sending 400...");
@@ -75,7 +66,7 @@ router.get('/researchers/:idResearcher', /* VerifyToken,*/ function (request, re
 
 
 /* Método POST que inserta un investigador en una collection */
-router.post('/researchers', /* VerifyToken,*/ function (request, response) {
+router.post('/researchers', function (request, response) {
     var newResearcher = request.body;
     if (!newResearcher) {
         console.log("WARNING: New POST request to /researchers/ without researcher, sending 400...");
@@ -122,7 +113,7 @@ router.post('/researchers', /* VerifyToken,*/ function (request, response) {
 
 
 /* Método POST sobre un recurso */
-router.post('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
+router.post('/researchers/:idResearcher', function (request, response) {
     var idResearcher = request.params.idResearcher;
     console.log("WARNING: New POST request to /researchers/" + idResearcher + ", sending 405...");
     response.sendStatus(405); // method not allowed
@@ -130,7 +121,7 @@ router.post('/researchers/:idResearcher', /* VerifyToken,*/ function (request, r
 
 
 /* Método PUT sobre un recurso para actualizar un investigador */
-router.put('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
+router.put('/researchers/:idResearcher', function (request, response) {
     var updatedResearcher = request.body;
     var idResearcher = request.params.idResearcher;
     if (!updatedResearcher) {
@@ -162,14 +153,14 @@ router.put('/researchers/:idResearcher', /* VerifyToken,*/ function (request, re
 
 
 /* Método PUT sobre una collection de investigadores */
-router.put('/researchers', /* VerifyToken,*/ function (request, response) {
+router.put('/researchers', function (request, response) {
     console.log("WARNING: New PUT request to /researchers, sending 405...");
     response.sendStatus(405); // method not allowed
 });
 
 
 /* Método DELETE sobre una collection de investigadores */
-router.delete('/researchers', /* VerifyToken,*/ function (request, response) {
+router.delete('/researchers', function (request, response) {
     console.log("INFO: New DELETE request to /researchers");
     researcherModel.remove({}, function (err, output) {
         if (err) {
@@ -189,7 +180,7 @@ router.delete('/researchers', /* VerifyToken,*/ function (request, response) {
 
 
 /* Método DELETE sobre un investigador */
-router.delete('/researchers/:idResearcher', /* VerifyToken,*/ function (request, response) {
+router.delete('/researchers/:idResearcher', function (request, response) {
     var idResearcher = request.params.idResearcher;
     if (!idResearcher) {
         console.log("WARNING: New DELETE request to /researchers/:idResearcher without idResearcher, sending 400...");
