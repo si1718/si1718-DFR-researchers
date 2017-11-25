@@ -33,7 +33,7 @@ function checkAccessToken(req, res, next){
     request(options, function (error, response, body) {
       
       if (body == "Unauthorized"){
-         return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }); 
+         return res.status(401).send({ auth: false, message: 'Failed to authenticate token.' }); 
       }else{
         next();
       }

@@ -20,7 +20,9 @@
         <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
         <script type="text/javascript" src="/bower_components/angular-route/angular-route.min.js"></script>
+        <script type="text/javascript" src="/bower_components/auth0-lock/build/lock.min.js"></script>
         
+        <!-- API -->
         <script type="text/javascript" src="app.js"></script>
         <script type="text/javascript" src="/controller/list-ctrl.js"></script>
         <script type="text/javascript" src="/controller/search-ctrl.js"></script>
@@ -28,13 +30,12 @@
         <!-- Secure API -->
         <script type="text/javascript" src="/controller/list-secure-ctrl.js"></script>
         
-        <script src="/bower_components/auth0-lock/build/lock.min.js"></script>
         <script>
           var clientId = 'ZH4XRlwhF7wHUR8NzjmJs7Px7d0TUJ58';
           var domain = 'si1718-dfr-researchers.eu.auth0.com';
           var lock = new Auth0Lock(clientId, domain, {
             auth: {
-              redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/',
+              redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/secure/',
               //responseType: 'code',
               params: {
                   responseType: 'id_token token',
@@ -69,7 +70,7 @@
               
               // Save token
               localStorage.setItem('accessToken', authResult.accessToken);
-              localStorage.setItem('idToken', authResult.idToken);
+              //localStorage.setItem('idToken', authResult.idToken);
             });
           });
           
@@ -80,7 +81,7 @@
               
               // Reset token
               localStorage.setItem("accessToken", null);
-              localStorage.setItem('idToken', null);
+              //localStorage.setItem('idToken', null);
               
               lock.logout();
           }
@@ -104,6 +105,9 @@
             </li>
             <li class="nav-item mx-0 mx-lg-1">
               <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-warning hide" id="logout" onclick="logout();">Logout</button>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#!/secure">Secure</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Search engine</a>
