@@ -1,5 +1,14 @@
 angular.module("ResearcherManagerApp")
-   .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", function($scope, $http, $routeParams) {
+   .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", "$rootScope", function($scope, $http, $routeParams, $rootScope) {
+       
+        /* Comprueba que el token de acceso se encuentra almacenado */
+        if (localStorage.getItem('accessToken') != 'null'){
+            $rootScope.login = false;
+            $rootScope.logout = true;
+        }else{
+            $rootScope.login = true;
+            $rootScope.logout = false;
+        }
         
         /* Obtiene todos los investigadores para mostrarlos en la tabla y refresca la tabla en cada acción */
         function refresh(){
@@ -8,7 +17,12 @@ angular.module("ResearcherManagerApp")
                 url: "/api/v1.1/researchers",
                 params: {search: $routeParams.search, token: localStorage.getItem("accessToken")}
             }).then(function(response) {
-                    $scope.researchers = response.data;
+                $scope.researchers = response.data;
+                if( !$.isArray(response.data) ||  !response.data.length ) {
+                    swal("There are no researchers that match your search", null, "info");
+                }
+            }, function(error){
+                swal("There are no researchers that match your search", null, "info");
             });
             
             $scope.sectionTitle = "List of researchers";
@@ -44,8 +58,9 @@ angular.module("ResearcherManagerApp")
                 .post("/api/v1/researchers/",$scope.newResearcher)
                 .then(function(response) {
                     refresh();
+                    swal("Researcher stored!", "success");
                 }, function(error){
-                    alert(error.data);
+                    swal("Please check all the fields. Thank you so much!", null, "warning");
                 });
             
         }
@@ -70,11 +85,25 @@ angular.module("ResearcherManagerApp")
         /* Elimina un investigador por el idResearcher */
         $scope.deleteResearcher = function (idResearcher){
             
-            $http
+            swal({
+              title: "Are you sure?",
+              text: "Your will not be able to recover this researcher!",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false
+            },
+            function(){
+                $http
                 .delete("/api/v1/researchers/"+idResearcher)
                 .then(function(response) {
                     refresh();
+                    swal("Deleted!", "Your researcher has been deleted.", "success");
+                }, function(error){
+                    swal("Something was wrong. Try again.", null, "warning");
                 });
+            });
             
         }
         

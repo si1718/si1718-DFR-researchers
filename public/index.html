@@ -10,6 +10,9 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     
+        <!-- Sweet alert -->
+        <link href="/bower_components/bootstrap-sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">
+    
         <!-- Plugin CSS -->
         <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
     
@@ -20,7 +23,9 @@
         <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
         <script type="text/javascript" src="/bower_components/angular-route/angular-route.min.js"></script>
-        <script type="text/javascript" src="/bower_components/auth0-lock/build/lock.min.js"></script>
+        
+        <!-- Sweet alert -->
+        <script type="text/javascript" src="/bower_components/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
         
         <!-- API -->
         <script type="text/javascript" src="app.js"></script>
@@ -30,13 +35,14 @@
         <!-- Secure API -->
         <script type="text/javascript" src="/controller/list-secure-ctrl.js"></script>
         
+        <script type="text/javascript" src="/bower_components/auth0-lock/build/lock.min.js"></script>
         <script>
           var clientId = 'ZH4XRlwhF7wHUR8NzjmJs7Px7d0TUJ58';
           var domain = 'si1718-dfr-researchers.eu.auth0.com';
           var lock = new Auth0Lock(clientId, domain, {
             auth: {
-              redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/',
-              //responseType: 'code',
+              redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/secure/researchers',
+              responseType: 'code',
               params: {
                   responseType: 'id_token token',
                   access_type: 'offline',
@@ -79,10 +85,6 @@
           }
           
           function logout(){
-            lock.logout({
-              returnTo: "https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/"
-            });
-            
             // Reset token
             localStorage.setItem("accessToken", null);
             //localStorage.setItem('idToken', null);
@@ -105,10 +107,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item mx-0 mx-lg-1">
-              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-info" onclick="login();">Login</button>
+              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-info" ng-if="login" onclick="login();">Login</button>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-warning" onclick="logout();">Logout</button>
+              <button class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-warning" ng-if="logout" onclick="logout();">Logout</button>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#!/secure">Secure</a>

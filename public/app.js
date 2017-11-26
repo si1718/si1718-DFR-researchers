@@ -20,17 +20,41 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
             
             .when("/secure",{
                 templateUrl: "/view/searchEngine-secure.html",
-                controller : "SearchEngineCtrl"
+                controller : "SearchEngineCtrl",
+                resolve:{
+                    "check":function($location){   
+                        if(localStorage.getItem('accessToken') == 'null'){
+                            swal("You don't have permission to access /secure", null, "warning");
+                            $location.path('/');
+                        }
+                    }
+                }
             })
             
             .when("/secure/researchers",{
                 templateUrl: "/view/list.html",
-                controller : "ListSecureCtrl"
+                controller : "ListSecureCtrl",
+                resolve:{
+                    "check":function($location){   
+                        if(localStorage.getItem('accessToken') == 'null'){
+                            swal("You don't have permission to access /secure", null, "warning");
+                            $location.path('/');
+                        }
+                    }
+                }
             })
             
             .when("/secure/researchers/:search",{
                 templateUrl: "/view/list.html",
-                controller : "ListSecureCtrl"
+                controller : "ListSecureCtrl",
+                resolve:{
+                    "check":function($location){   
+                        if(localStorage.getItem('accessToken') == 'null'){
+                            swal("You don't have permission to access /secure", null, "warning");
+                            $location.path('/');
+                        }
+                    }
+                }
             })
             
             .otherwise({

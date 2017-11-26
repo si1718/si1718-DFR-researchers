@@ -1,17 +1,18 @@
 angular.module("ResearcherManagerApp")
-   .controller("SearchEngineCtrl", ["$scope", "$http", "$location", function($scope, $http, $location) {
+   .controller("SearchEngineCtrl", ["$scope", "$http", "$rootScope", function($scope, $http, $rootScope) {
         
     /* Almaceno el campo por el que se desea buscar. */
     $scope.searchTextBox="";
     
     $scope.sectionTitle = "Search Engine";
     
+    /* Comprueba que el token de acceso se encuentra almacenado */
     if (localStorage.getItem('accessToken') != 'null'){
-        $scope.login = false;
-        $scope.logout = true;
+        $rootScope.login = false;
+        $rootScope.logout = true;
     }else{
-        $scope.login = true;
-        $scope.logout = false;
+        $rootScope.login = true;
+        $rootScope.logout = false;
     }
 
 }]);
