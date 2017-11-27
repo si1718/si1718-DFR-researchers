@@ -134,7 +134,7 @@
                     <button class="btn btn-primary" ng-click="addResearcher()">Add Researcher</button>
                 </td>
             </tr>
-            <tr ng-repeat="researcher in researchers">
+            <tr ng-repeat="researcher in researchers | startFrom:currentPage*pageSize | limitTo:pageSize">
                 <td>{{researcher.name}}</td>
                 <td>{{researcher.phone}}</td>
                 <td>{{researcher.orcid}}</td>
@@ -150,4 +150,15 @@
             </tr>
         </tbody>
     </table>
+    <div class="row" style="text-align:center;">
+        <div class="col-md-12 col-xs-12">
+            <button class="btn btn-info" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                Previous
+            </button>
+            {{currentPage+1}}/{{numberOfPages()}}
+            <button class="btn btn-info" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                Next
+            </button>
+        </div>
+    </div>
 </div>

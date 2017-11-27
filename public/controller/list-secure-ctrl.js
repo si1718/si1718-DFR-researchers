@@ -1,5 +1,17 @@
-angular.module("ResearcherManagerApp")
+var app = angular.module("ResearcherManagerApp")
    .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", "$rootScope", function($scope, $http, $routeParams, $rootScope) {
+       
+        $scope.currentPage = 0;
+        $scope.pageSize = 5;
+        $scope.researchers = [];
+        
+        $scope.getData = function () {
+            return $scope.researchers;
+        }
+        
+        $scope.numberOfPages=function(){
+            return Math.ceil($scope.getData().length/$scope.pageSize);       
+        }
        
         /* Comprueba que el token de acceso se encuentra almacenado */
         if (localStorage.getItem('accessToken') != 'null'){
@@ -138,3 +150,11 @@ angular.module("ResearcherManagerApp")
         refresh();
 
 }]);
+
+
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
