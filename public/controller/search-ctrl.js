@@ -1,5 +1,5 @@
 angular.module("ResearcherManagerApp")
-   .controller("SearchEngineCtrl", ["$scope", "$http", "$rootScope", "$rootScope", function($scope, $http, $rootScope, $rootScope) {
+   .controller("SearchEngineCtrl", ["$scope", "$http", "$rootScope", function($scope, $http, $rootScope) {
         
     /* Almaceno el campo por el que se desea buscar. */
     $scope.searchTextBox="";
