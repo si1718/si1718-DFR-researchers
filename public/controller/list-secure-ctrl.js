@@ -1,5 +1,5 @@
 var app = angular.module("ResearcherManagerApp")
-   .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", function($scope, $http, $routeParams) {
+   .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", "$rootScope", function($scope, $http, $routeParams, $rootScope) {
        
         $scope.currentPage = 0;
         $scope.pageSize = 5;
@@ -13,20 +13,13 @@ var app = angular.module("ResearcherManagerApp")
             return Math.ceil($scope.getData().length/$scope.pageSize);       
         }
        
-        /* LOGIN SECTION */
-        $scope.login = true;
-        $scope.logout = false;
-        
         /* Comprueba que el token de acceso se encuentra almacenado */
-        if (localStorage.getItem('accessToken') != null && localStorage.getItem('accessToken') != 'null'){
-            $scope.login = false;
-            $scope.logout = true;
-        }else if (localStorage.getItem('accessToken') == null || localStorage.getItem('accessToken') != 'null'){
-            $scope.login = true;
-            $scope.logout = false;
+        if (localStorage.getItem('accessToken') != 'null'){
+            $rootScope.login = false;
+            $rootScope.logout = true;
         }else{
-            $scope.login = true;
-            $scope.logout = false;
+            $rootScope.login = true;
+            $rootScope.logout = false;
         }
         
         /* Obtiene todos los investigadores para mostrarlos en la tabla y refresca la tabla en cada acción */
