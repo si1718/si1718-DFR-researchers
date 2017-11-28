@@ -23,7 +23,7 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller : "SearchEngineCtrl",
                 resolve:{
                     "check":function($location){   
-                        if(localStorage.getItem('accessToken') == 'null'){
+                        if(localStorage.getItem("accessToken") === null || localStorage.getItem('accessToken') == 'null'){
                             swal("You don't have permission to access /secure", null, "warning");
                             $location.path('/');
                         }
@@ -36,7 +36,7 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller : "ListSecureCtrl",
                 resolve:{
                     "check":function($location){   
-                        if(localStorage.getItem('accessToken') == 'null'){
+                        if(localStorage.getItem("accessToken") === null || localStorage.getItem('accessToken') == 'null'){
                             swal("You don't have permission to access /secure", null, "warning");
                             $location.path('/');
                         }
@@ -49,7 +49,7 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller : "ListSecureCtrl",
                 resolve:{
                     "check":function($location){   
-                        if(localStorage.getItem('accessToken') == 'null'){
+                        if(localStorage.getItem("accessToken") === null || localStorage.getItem('accessToken') == 'null'){
                             swal("You don't have permission to access /secure", null, "warning");
                             $location.path('/');
                         }
