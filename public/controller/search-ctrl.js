@@ -7,7 +7,10 @@ angular.module("ResearcherManagerApp")
     $scope.sectionTitle = "Search Engine";
     
     /* Comprueba que el token de acceso se encuentra almacenado */
-    if (localStorage.getItem('accessToken') != 'null'){
+    if (localStorage.getItem("accessToken") === null){
+        $rootScope.login = true;
+        $rootScope.logout = false;
+    }else if (localStorage.getItem('accessToken') != 'null'){
         $rootScope.login = false;
         $rootScope.logout = true;
     }else{
