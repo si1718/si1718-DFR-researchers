@@ -23,18 +23,16 @@ angular.module("ResearcherManagerApp")
                 .then(function(response) {
                     $scope.data = response.data;
                     
-                    pieChartDepartment("department_graph", $scope.data, "Numbers of researchers by department");
-                    //funnel_graph("funnelDepartments_graph", $scope.data, "Types of Departments");
+                    pieChartDepartment("department_graph", $scope.data, "Departments that have more than 100 researchers");
                 });
                 
             /* Llama a la API para obtener todos los departamentos */
             $http
-                .get("/api/v1/groupsGraph")
+                .get("https://si1718-rgg-groups.herokuapp.com/api/v1/groups")
                 .then(function(response) {
                     $scope.dataAux = response.data;
                     
-                    //pieChart("group_graph", $scope.dataAux, "Numbers of researchers by group");
-                    //funnel_graph("funnelGroups_graph", $scope.dataAux, "Types of Groups");
+                    pieChartGroup("group_graph", $scope.dataAux, "Groups that have more than 40 researchers");
                 });
         }
 
@@ -56,13 +54,18 @@ function pieChartDepartment(id, data, customTitle){
             
             if (department["researchers"].length > 100){
                 var jsonObject = {};
-                jsonObject["y"] = department["researchers"].length;
-                jsonObject["name"] = department["department"];
+                jsonObject["count"] = department["researchers"].length;
+                jsonObject["_id"] = department["department"];
                 
                 departmentArray.push(jsonObject);
             }
         }
     }
+    
+    $.each(departmentArray, function (i, point) {
+        point.y = point.count;
+        point.name = point._id;
+    });
     
     Highcharts.chart(id, {
         chart: {
@@ -102,43 +105,63 @@ function pieChartDepartment(id, data, customTitle){
 }
 
 
-function funnel_graph(id, data, customTitle){
+function pieChartGroup(id, data, customTitle){
     
-    $.each(data, function (i, point) {
+    var groupArray = [];
+    
+    for(var i = 0; i < data.length; i++) {
+        var group = data[i];
+        
+        if (group["components"] != undefined && group["components"] != null && group["components"].length > 0){
+            
+            if (group["components"].length > 40){
+                var jsonObject = {};
+                jsonObject["count"] = group["components"].length;
+                jsonObject["_id"] = group["name"];
+                
+                groupArray.push(jsonObject);
+            }
+        }
+    }
+    
+    $.each(groupArray, function (i, point) {
         point.y = point.count;
         point.name = point._id;
     });
     
     Highcharts.chart(id, {
         chart: {
-            type: 'funnel'
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
         },
         title: {
             text: customTitle
         },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.count}</b>'
+        },
         plotOptions: {
-            series: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b> ({point.y:,.0f})',
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                    softConnector: true
-                },
-                center: ['40%', '50%'],
-                neckWidth: '30%',
-                neckHeight: '25%',
-                width: '80%'
+                    format: '<b>{point._id}</b>: {point.count}',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
             }
-        },
-        legend: {
-            enabled: false
         },
         credits: {
             enabled: false
         },
         series: [{
-            name: 'Total researchers',
-            data: data
+            name: 'Researchers',
+            colorByPoint: true,
+            data: groupArray
         }]
     });
 }
