@@ -24,7 +24,7 @@ angular.module("ResearcherManagerApp")
                     $scope.data = response.data;
                     
                     pieChart("department_graph", $scope.data, "Numbers of researchers by department");
-                    funnel_graph("funnelDepartments_graph", $scope.data, "Types of Departments");
+                    //funnel_graph("funnelDepartments_graph", $scope.data, "Types of Departments");
                 });
                 
             /* Llama a la API para obtener todos los departamentos */
@@ -34,7 +34,7 @@ angular.module("ResearcherManagerApp")
                     $scope.dataAux = response.data;
                     
                     pieChart("group_graph", $scope.dataAux, "Numbers of researchers by group");
-                    funnel_graph("funnelGroups_graph", $scope.dataAux, "Types of Groups");
+                    //funnel_graph("funnelGroups_graph", $scope.dataAux, "Types of Groups");
                 });
         }
 
