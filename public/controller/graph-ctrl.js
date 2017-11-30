@@ -19,11 +19,11 @@ angular.module("ResearcherManagerApp")
             
             /* Llama a la API para obtener todos los departamentos */
             $http
-                .get("/api/v1/departmentsGraph")
+                .get("https://si1718-amc-departments.herokuapp.com/api/v1/departments")
                 .then(function(response) {
                     $scope.data = response.data;
                     
-                    pieChart("department_graph", $scope.data, "Numbers of researchers by department");
+                    pieChartDepartment("department_graph", $scope.data, "Numbers of researchers by department");
                     //funnel_graph("funnelDepartments_graph", $scope.data, "Types of Departments");
                 });
                 
@@ -33,7 +33,7 @@ angular.module("ResearcherManagerApp")
                 .then(function(response) {
                     $scope.dataAux = response.data;
                     
-                    pieChart("group_graph", $scope.dataAux, "Numbers of researchers by group");
+                    //pieChart("group_graph", $scope.dataAux, "Numbers of researchers by group");
                     //funnel_graph("funnelGroups_graph", $scope.dataAux, "Types of Groups");
                 });
         }
@@ -42,16 +42,27 @@ angular.module("ResearcherManagerApp")
         refresh();
 
     }]);
-    
 
 /* ************** GRAPHS FUNCTIONS ***************** */
 
-function pieChart(id, data, customTitle){
+function pieChartDepartment(id, data, customTitle){
     
-    $.each(data, function (i, point) {
-        point.y = point.count;
-        point.name = point._id;
-    });
+    var departmentArray = [];
+    
+    for(var i = 0; i < data.length; i++) {
+        var department = data[i];
+        
+        if (department["researchers"] != undefined && department["researchers"] != null && department["researchers"].length > 0){
+            
+            if (department["researchers"].length > 100){
+                var jsonObject = {};
+                jsonObject["y"] = department["researchers"].length;
+                jsonObject["name"] = department["department"];
+                
+                departmentArray.push(jsonObject);
+            }
+        }
+    }
     
     Highcharts.chart(id, {
         chart: {
@@ -85,7 +96,7 @@ function pieChart(id, data, customTitle){
         series: [{
             name: 'Researchers',
             colorByPoint: true,
-            data: data
+            data: departmentArray
         }]
     });
 }
