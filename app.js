@@ -6,6 +6,8 @@ var cors = require('cors');
 
 global.__root   = __dirname + '/'; 
 
+app.use(cors());
+
 app.get('/api', function (req, res) {
   res.status(200).send('API works.');
 });
@@ -21,9 +23,6 @@ app.use('/api/v1', ResearcherController);
 
 var ResearcherSecureController = require(__root + 'researcher/ResearcherSecureController');
 app.use('/api/v1.1', ResearcherSecureController);
-
-
-app.use(cors());
 
 app.use(express.static(path.join(__dirname, "public")));
 
