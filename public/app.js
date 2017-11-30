@@ -57,6 +57,11 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 }
             })
             
+            .when("/graphs",{
+                templateUrl: "/view/graph.html",
+                controller : "GraphCtrl"
+            })
+            
             .otherwise({
                 redirectTo: '/'
             }); 
