@@ -135,7 +135,7 @@
                 <td><input ng-model="newResearcher.idDepartment"/></td>
                 <td><input ng-model="newResearcher.professionalSituation"/></td>
                 <td>
-                    <button class="btn btn-primary" ng-click="addResearcher()">Add Researcher</button>
+                    <button class="btn btn-primary" id="addResearcher" ng-click="addResearcher()">Add Researcher</button>
                 </td>
             </tr>
             <tr ng-repeat="researcher in researchers | startFrom:currentPage*pageSize | limitTo:pageSize">

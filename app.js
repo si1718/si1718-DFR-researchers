@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var db = require('./db');
 var path = require('path');
+var cors = require('cors');
 
 global.__root   = __dirname + '/'; 
 
@@ -21,6 +22,8 @@ app.use('/api/v1', ResearcherController);
 var ResearcherSecureController = require(__root + 'researcher/ResearcherSecureController');
 app.use('/api/v1.1', ResearcherSecureController);
 
+
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, "public")));
 
