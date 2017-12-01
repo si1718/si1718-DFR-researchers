@@ -1,204 +1,174 @@
 <!DOCTYPE html>
-<html ng-app="ResearcherManagerApp">
-    <head>
-        <title>Researchers</title>
-        <!-- Bootstrap core CSS -->
-        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
- 
-        <!-- Custom fonts for this template -->
-        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<html lang="en" ng-app="ResearcherManagerApp">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Microservice about researchers of University of Seville">
+    <meta name="author" content="David Fernández">
+
+    <title>Researchers</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="vendor/css/full-width-pics.css" rel="stylesheet">
+    <link href="vendor/css/custom-bootstrap.css" rel="stylesheet">
     
-        <!-- Sweet alert -->
-        <link href="/bower_components/bootstrap-sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">
+    <!-- Sweet alert -->
+    <link href="/bower_components/bootstrap-sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-route/angular-route.min.js"></script>
     
-        <!-- Plugin CSS -->
-        <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+    <!-- Sweet alert -->
+    <script type="text/javascript" src="/bower_components/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
     
-        <!-- Custom styles for this template -->
-        <link href="css/freelancer.min.css" rel="stylesheet">
+    <!-- HighCharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
+    
+    <!-- API -->
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="/controller/list-ctrl.js"></script>
+    <script type="text/javascript" src="/controller/search-ctrl.js"></script>
+    <script type="text/javascript" src="/controller/graph-ctrl.js"></script>
+    
+    <!-- Secure API -->
+    <script type="text/javascript" src="/controller/list-secure-ctrl.js"></script>
+    
+    <script type="text/javascript" src="/bower_components/auth0-lock/build/lock.min.js"></script>
+    <script>
+      var clientId = 'ZH4XRlwhF7wHUR8NzjmJs7Px7d0TUJ58';
+      var domain = 'si1718-dfr-researchers.eu.auth0.com';
+      var lock = new Auth0Lock(clientId, domain, {
+        auth: {
+          redirectUrl: 'https://si1718-dfr-researchers.herokuapp.com/#!/secure/researchers',
+          responseType: 'code',
+          params: {
+              responseType: 'id_token token',
+              access_type: 'offline',
+              scope: 'openid profile email exp' // Learn about scopes: https://auth0.com/docs/scopes
+          },
+          responseType: "id_token token",
+          theme: {
+            logo: 'https://personal.us.es/amjimigl/image/us.png',
+            primaryColor: '#31324F'
+          }
+        }
+      });
       
-        <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
-        <script type="text/javascript" src="/bower_components/angular-route/angular-route.min.js"></script>
-        
-        <!-- Sweet alert -->
-        <script type="text/javascript" src="/bower_components/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
-        
-        <!-- HighCharts -->
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/series-label.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script src="https://code.highcharts.com/modules/funnel.js"></script>
-        
-        <!-- API -->
-        <script type="text/javascript" src="app.js"></script>
-        <script type="text/javascript" src="/controller/list-ctrl.js"></script>
-        <script type="text/javascript" src="/controller/search-ctrl.js"></script>
-        <script type="text/javascript" src="/controller/graph-ctrl.js"></script>
-        
-        <!-- Secure API -->
-        <script type="text/javascript" src="/controller/list-secure-ctrl.js"></script>
-        
-        <script type="text/javascript" src="/bower_components/auth0-lock/build/lock.min.js"></script>
-        <script>
-          var clientId = 'ZH4XRlwhF7wHUR8NzjmJs7Px7d0TUJ58';
-          var domain = 'si1718-dfr-researchers.eu.auth0.com';
-          var lock = new Auth0Lock(clientId, domain, {
-            auth: {
-              redirectUrl: 'https://si1718-dfr-researchers.herokuapp.com/#!/secure/researchers',
-              responseType: 'code',
-              params: {
-                  responseType: 'id_token token',
-                  access_type: 'offline',
-                  scope: 'openid profile email exp' // Learn about scopes: https://auth0.com/docs/scopes
-              },
-              responseType: "id_token token",
-              theme: {
-                logo: 'https://personal.us.es/amjimigl/image/us.png',
-                primaryColor: '#31324F'
-              }
-            }
-          });
-          
-          /* Check erros */
-          lock.on('authorization_error', function(error) {
-            lock.show({
-              flashMessage: {
-                type: 'error',
-                text: error.error_description
-              }
-            });
-          });
-          
-          // Listen for the authenticated event and get profile
-          lock.on("authenticated", function(authResult, token) {
-            lock.getUserInfo(authResult.accessToken, function(error, profile) {
-              if (error) {
-                // Handle error
-                return;
-              }
-              
-              // Save token
-              localStorage.setItem('accessToken', authResult.accessToken);
-              //localStorage.setItem('idToken', authResult.idToken);
-            });
-          });
-          
-          function login(){
-            lock.show();
+      /* Check erros */
+      lock.on('authorization_error', function(error) {
+        lock.show({
+          flashMessage: {
+            type: 'error',
+            text: error.error_description
+          }
+        });
+      });
+      
+      // Listen for the authenticated event and get profile
+      lock.on("authenticated", function(authResult, token) {
+        lock.getUserInfo(authResult.accessToken, function(error, profile) {
+          if (error) {
+            // Handle error
+            return;
           }
           
-          function logout(){
-            // Reset token
-            localStorage.setItem("accessToken", null);
-            //localStorage.setItem('idToken', null);
-            
-            lock.logout();
-          }
-        </script>
-    </head>
+          // Save token
+          localStorage.setItem('accessToken', authResult.accessToken);
+          //localStorage.setItem('idToken', authResult.idToken);
+        });
+      });
+      
+      function login(){
+        lock.show();
+      }
+      
+      function logout(){
+        // Reset token
+        localStorage.setItem("accessToken", null);
+        //localStorage.setItem('idToken', null);
+        
+        lock.logout();
+      }
+    </script>
     
-    <body id="page-top">
+</head>
+
+<body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
-      <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#!/">Researchers</a>
-        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#!/secure">Secure</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#!/graphs">Graphs</a>
-            </li>
-            <!--<li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Search engine</a>
-            </li>-->
-            <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a>
-            </li>
-          </ul>
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-red" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Researchers</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#!/secure">Secure</a>
+                    </li>
+                    <li>
+                        <a href="#!/graphs">Graphs</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-      </div>
+        <!-- /.container -->
     </nav>
 
-    <!-- Header -->
-    <header class="masthead bg-primary text-white text-center">
-      <div class="container">
-        <img class="img-fluid mb-5 d-block mx-auto" src="img/logo-US.png" style="max-width: 50%;" alt="">
-      </div>
+    <!-- Full Width Image Header with Logo -->
+    <!-- Image backgrounds are set within the full-width-pics.css file. -->
+    <header class="image-bg-fluid-height">
+        <img class="img-responsive img-center" src="vendor/images/logo_us.png" alt="">
     </header>
 
-    <!-- Portfolio Grid Section -->
-    <section class="portfolio" id="portfolio" ng-view>
-    </section>
-
-    <!-- About Section -->
-    <section class="bg-primary text-white mb-0" id="about">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-white">About</h2>
-        <hr class="star-light mb-5">
-        <div class="row text-center">
-            <p class="lead">This is a microservice about researchers of University of Seville.</p>
-            <p class="lead">If you need information about someone, just search on this app.</p>
+    <!-- Content Section -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Las vistas se cargan en este div por el routeProvider -->
+                    <div ng-view></div>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer text-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 mb-5 mb-lg-0">
-          </div>
-          <div class="col-md-4 mb-5 mb-lg-0">
-            <h4 class="text-uppercase mb-4">More information</h4>
-            <ul class="list-inline mb-0">
-              <li class="list-inline-item">
-                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="https://github.com/si1718/si1718-dfr-researchers" target="_blank">
-                  <i class="fa fa-fw fa-github"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-          </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Universidad de Sevilla 2017</p>
+                </div>
+            </div>
+            <!-- /.row -->
         </div>
-      </div>
+        <!-- /.container -->
     </footer>
 
-    <div class="copyright py-4 text-center text-white">
-      <div class="container">
-        <small>Copyright &copy; si1718-dfr-researchers</small>
-      </div>
-    </div>
-
-    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-to-top d-lg-none position-fixed ">
-      <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
-        <i class="fa fa-chevron-up"></i>
-      </a>
-    </div>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="js/freelancer.min.js"></script>
-
-  </body>
+</body>
 
 </html>
