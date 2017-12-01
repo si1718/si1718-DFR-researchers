@@ -1,96 +1,3 @@
-<!-- Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="row">
-            <div class="col-md-8 col-xs-12">
-                <h2 class="modal-title" id="editModalLabel">Edit researcher</h2>
-            </div>
-            <div class="col-md-4 col-xs-12">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="nameInput">Name:</label>
-                    <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" ng-model="updateResearcher.name">
-                    <small id="nameHelp" class="form-text text-muted">Name required.</small>
-                 </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="phoneInput">Phone:</label>
-                    <input type="text" class="form-control" id="phoneInput" placeholder="Enter phone" ng-model="updateResearcher.phone">
-                 </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="orcidInput">ORCID:</label>
-                    <input type="text" class="form-control" id="orcidInput" aria-describedby="orcidHelp" ng-model="updateResearcher.orcid">
-                    <small id="orcidHelp" class="form-text text-muted">ORCID required.</small>
-                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="researcherIdInput">ResearcherId:</label>
-                    <input type="text" class="form-control" id="researcherIdInput" placeholder="Enter researcherId" ng-model="updateResearcher.researcherId">
-                 </div>
-            </div>
-            <div class="col-md-8 col-xs-12">
-                 <div class="form-group">
-                    <label for="linkInput">External Link:</label>
-                    <input type="text" class="form-control" id="linkInput" placeholder="Enter link" ng-model="updateResearcher.link">
-                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="groupInput">Group:</label>
-                    <input type="text" class="form-control" id="groupInput" placeholder="Enter group" ng-model="updateResearcher.idGroup">
-                 </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="departmentInput">Department:</label>
-                    <input type="text" class="form-control" id="phoneInput" placeholder="Enter department" ng-model="updateResearcher.idDepartment">
-                 </div>
-            </div>
-            <div class="col-md-4 col-xs-12">
-                 <div class="form-group">
-                    <label for="professionalSituationInput">Professional Situation:</label>
-                    <input type="text" class="form-control" id="professionalSituationInput" placeholder="Enter professional situation" ng-model="updateResearcher.professionalSituation">
-                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 col-xs-12">
-                <div ng-if="errorsUpdate" class="alert alert-danger">
-                  <strong>Error!</strong> Please check all the fields. Thank you so much.
-                </div>
-                
-                <div ng-if="successUpdate" class="alert alert-success">
-                  <strong>Success!</strong> Updated successfully.
-                </div> 
-            </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" ng-click="closeEditModal()" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" ng-click="editResearcher(updateResearcher.idResearcher)">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Vertical buttons -->
 <div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_vertical_style" style="left:0px; top:150px;">
     <a class="rounded btn btn-xs btn-info" ng-if="login" onclick="login();">Login</a>
@@ -170,6 +77,7 @@
         <div class="row">
             <div class="col-md-12 col-xs-12">
                 <button class="btn btn-primary pull-right" id="addResearcher" ng-click="addResearcher()">Add Researcher</button>
+                <a class="btn btn-warning pull-right" href="/#!" style="margin-right: 10px;">Back</a>
             </div>
         </div>
     
@@ -210,7 +118,7 @@
                 <td>{{researcher.professionalSituation}}</td>
                 <td>
                     <button class="btn btn-danger" ng-click="deleteResearcher(researcher.idResearcher)">Delete</button>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" ng-click="openEditModal(researcher.idResearcher)">Edit</button>
+                    <a class="btn btn-primary" id="addResearcher" href="#!/researchers/{{researcher.idResearcher}}/edit">Edit</a>
                 </td>
             </tr>
         </tbody>

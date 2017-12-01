@@ -1,0 +1,97 @@
+<!-- Vertical buttons -->
+<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_vertical_style" style="left:0px; top:150px;">
+    <a class="rounded btn btn-xs btn-info" ng-if="login" onclick="login();">Login</a>
+    <a class="rounded btn btn-xs btn-warning" ng-if="logout" onclick="logout();">Logout</a>
+    <a></a>
+    <a class="rounded btn btn-xs btn-success" href="https://documenter.getpostman.com/view/3125212/collection/7E8hvic" target="_blank">API Documentation</a>
+    <a></a>
+    <a class="rounded btn btn-xs btn-primary" href="https://github.com/si1718/si1718-dfr-researchers" target="_blank">
+      <i class="fa fa-fw fa-github"></i>
+    </a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+<section style="margin: 10px;">
+    <fieldset style="min-height:150px;">
+        <legend style="width: 35%;"><b> Edit researcher </b> </legend>
+        <label> <br/> </label>
+        <label> <br/> </label>
+        
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlName">Name</label>
+                    <input type="text" class="form-control" id="formControlName" ng-model="updateResearcher.name" aria-describedby="inputNameHelp" placeholder="Enter name">
+                    <small id="inputNameHelp" class="form-text text-muted">Name required.</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlPhone">Phone</label>
+                    <input type="text" class="form-control" id="formControlPhone" ng-model="updateResearcher.phone" placeholder="Enter phone">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlORCID">ORCID</label>
+                    <input type="text" class="form-control" id="formControlORCID" ng-model="updateResearcher.orcid" aria-describedby="inputorcidHelp" placeholder="Enter ORCID">
+                    <small id="inputorcidHelp" class="form-text text-muted">ORCID required.</small>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlResearcherId">ResearcherId</label>
+                    <input type="text" class="form-control" id="formControlResearcherId" ng-model="updateResearcher.researcherId" placeholder="Enter ResearcherId">
+                </div>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlLink">Link</label>
+                    <input type="text" class="form-control" id="formControlLink" ng-model="updateResearcher.link" placeholder="Enter Link">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlIdGroup">Group</label>
+                    <input type="text" class="form-control" id="formControlIdGroup" ng-model="updateResearcher.idGroup" placeholder="Enter group">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlDepartment">Department</label>
+                    <input type="text" class="form-control" id="formControlDepartment" ng-model="updateResearcher.idDepartment" placeholder="Enter department">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="formControlProfessionalSituation">Professional Situation</label>
+                    <input type="text" class="form-control" id="formControlProfessionalSituation" ng-model="updateResearcher.professionalSituation" placeholder="Enter professional situation">
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <button class="btn btn-primary pull-right" ng-click="editResearcher(updateResearcher.idResearcher)">Save changes</button>
+                <a class="btn btn-warning pull-right" href="/#!/researchers" style="margin-right: 10px;">Back</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div ng-if="errorsUpdate" class="alert alert-danger">
+                  <strong>Error!</strong> Please check all the fields. Thank you so much.
+                </div>
+                
+                <div ng-if="successUpdate" class="alert alert-success">
+                  <strong>Success!</strong> Updated successfully.
+                </div> 
+            </div>
+        </div>
+    
+    </fieldset>
+</section>

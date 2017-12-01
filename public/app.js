@@ -18,6 +18,11 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller : "ListCtrl"
             })
             
+            .when("/researchers/:idResearcher/edit", {
+                templateUrl: "/view/edit.html",
+                controller: "EditCtrl"
+            })
+            
             .when("/secure",{
                 templateUrl: "/view/searchEngine-secure.html",
                 controller : "SearchEngineCtrl",

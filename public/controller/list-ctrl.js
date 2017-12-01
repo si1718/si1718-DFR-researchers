@@ -69,7 +69,9 @@ var app = angular.module("ResearcherManagerApp")
         /* Añade un investigador */
         $scope.addResearcher = function (){
             
-            $http
+            if ($scope.newResearcher.orcid != null && $scope.newResearcher.orcid != "" &&
+                $scope.newResearcher.name != null && $scope.newResearcher.name != ""){
+                $http
                 .post("/api/v1/researchers/",$scope.newResearcher)
                 .then(function(response) {
                     refresh();
@@ -77,6 +79,9 @@ var app = angular.module("ResearcherManagerApp")
                 }, function(error){
                     swal("Please check all the fields. Thank you so much!", null, "warning");
                 });
+            }else{
+                swal("Please check all the fields. Thank you so much!", null, "warning");
+            }
             
         }
         
