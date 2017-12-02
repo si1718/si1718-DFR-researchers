@@ -81,23 +81,6 @@ var app = angular.module("ResearcherManagerApp")
             }
             
         }
-        
-        /* Edita un investigador por el idResearcher */
-        $scope.editResearcher = function (idResearcher){
-            
-            $http
-                .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
-                .then(function(response) {
-                    refresh();
-                    $scope.openEditModal(idResearcher);
-                    $scope.errorsUpdate = false;
-                    $scope.successUpdate = true;
-                }, function(error){
-                    $scope.errorsUpdate = true;
-                    $scope.successUpdate = false;
-                });
-            
-        }
 
         /* Elimina un investigador por el idResearcher */
         $scope.deleteResearcher = function (idResearcher){

@@ -123,7 +123,12 @@
                 <td>{{researcher.researcherId}}</td>
                 <td>{{researcher.link}}</td>
                 <td>{{researcher.idGroup}}</td>
-                <td>{{researcher.idDepartment}}</td>
+                <td ng-if="researcher.departmentName != null && researcher.departmentName != ''">
+                    <p><a href="{{researcher.departmentViewURL}}" target="_blank">{{researcher.departmentName}}</a></p>      
+                </td>
+                <td ng-if="researcher.departmentName == null || researcher.departmentName == ''">    
+                    <p>{{researcher.idDepartment}}</p>
+                </td>
                 <td>{{researcher.professionalSituation}}</td>
                 <td>
                     <button class="btn btn-danger" ng-click="deleteResearcher(researcher.idResearcher)">Delete</button>
