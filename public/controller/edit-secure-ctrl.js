@@ -18,10 +18,12 @@ var app = angular.module("ResearcherManagerApp")
         
         function refresh(){
             if (idResearcher) {
-              /* Llama a la API si este parámetro se ha recibido */
-                $http
-                    .get("/api/v1/researchers/" + idResearcher)
-                    .then(function(response) {
+                /* Llama a la API si este parámetro se ha recibido */
+                $http({
+                    url: "/api/v1.1/researchers/" + idResearcher,
+                    params: {token: localStorage.getItem("accessToken")}
+                })
+                .then(function(response) {
                     $scope.updateResearcher = response.data;
                     
                     /* Compruebo si ya ha sido validado un departamento */
@@ -46,9 +48,9 @@ var app = angular.module("ResearcherManagerApp")
                             departmentName : ""
                         }
                     }
-                }, function(error){
-                    swal("There are no researchers that match your search", null, "info");
-                });
+            }, function(error){
+                swal("There are no researchers that match your search", null, "info");
+            });
             }else{
                 $scope.updateResearcher={
                     idResearcher: "",
@@ -79,13 +81,13 @@ var app = angular.module("ResearcherManagerApp")
             }
             
             $http
-                .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
-                .then(function(response) {
-                    refresh();
-                    swal("Researcher edited!", null, "success");
-                }, function(error){
-                    swal("Please check all the fields. Thank you so much!", null, "warning");
-                });
+            .put("/api/v1.1/researchers/"+idResearcher+"?token=" + localStorage.getItem("accessToken"),$scope.updateResearcher)
+            .then(function(response) {
+                refresh();
+                swal("Researcher edited!", null, "success");
+            }, function(error){
+                swal("Please check all the fields. Thank you so much!", null, "warning");
+            });
             
         }
         
