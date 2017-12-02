@@ -37,7 +37,7 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
             })
             
             .when("/secure/researchers",{
-                templateUrl: "/view/list.html",
+                templateUrl: "/view/list-secure.html",
                 controller : "ListSecureCtrl",
                 resolve:{
                     "check":function($location){   
@@ -50,8 +50,21 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
             })
             
             .when("/secure/researchers/:search",{
-                templateUrl: "/view/list.html",
+                templateUrl: "/view/list-secure.html",
                 controller : "ListSecureCtrl",
+                resolve:{
+                    "check":function($location){   
+                        if(localStorage.getItem("accessToken") === null || localStorage.getItem('accessToken') == 'null'){
+                            swal("You don't have permission to access /secure", null, "warning");
+                            $location.path('/');
+                        }
+                    }
+                }
+            })
+            
+            .when("/secure/researchers/:idResearcher/edit", {
+                templateUrl: "/view/edit-secure.html",
+                controller: "EditSecureCtrl",
                 resolve:{
                     "check":function($location){   
                         if(localStorage.getItem("accessToken") === null || localStorage.getItem('accessToken') == 'null'){

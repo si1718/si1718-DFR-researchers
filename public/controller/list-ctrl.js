@@ -32,10 +32,9 @@ var app = angular.module("ResearcherManagerApp")
                 url: "/api/v1/researchers",
                 params: $routeParams
             }).then(function(response) {
-                if( !$.isArray(response.data) ||  !response.data.length ) {
+                $scope.researchers = sortByKey(response.data, 'name');
+                if(!$.isArray(response.data) || !response.data.length) {
                     swal("There are no researchers that match your search", null, "info");
-                }else{
-                    $scope.researchers = sortByKey(response.data, 'name');
                 }
             }, function(error){
                 swal("There are no researchers that match your search", null, "info");

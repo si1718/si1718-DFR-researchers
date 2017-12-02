@@ -242,7 +242,6 @@ router.get('/departmentsGraph', function (request, response) {
 });
 
 
-/* ************************************* API GRAPHS ****************************************** */
 /* Método GET que devuelve todos los grupos que se encuentran en la base de datos junto al número de investigadores que contiene */
 router.get('/groupsGraph', function (request, response) {
     console.log("INFO: New GET request to /groupsGraph");

@@ -1,8 +1,8 @@
 var app = angular.module("ResearcherManagerApp")
-   .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", "$rootScope", function($scope, $http, $routeParams, $rootScope) {
+   .controller("ListSecureCtrl", ["$scope", "$http", "$routeParams", "$rootScope", "$filter", function($scope, $http, $routeParams, $rootScope, $filter) {
        
         $scope.currentPage = 0;
-        $scope.pageSize = 5;
+        $scope.pageSize = 10;
         $scope.researchers = [];
         
         $scope.getData = function () {
@@ -12,7 +12,7 @@ var app = angular.module("ResearcherManagerApp")
         $scope.numberOfPages=function(){
             return Math.ceil($scope.getData().length/$scope.pageSize);       
         }
-       
+        
         /* Comprueba que el token de acceso se encuentra almacenado */
         if (localStorage.getItem("accessToken") === null){
             $rootScope.login = true;
@@ -32,8 +32,8 @@ var app = angular.module("ResearcherManagerApp")
                 url: "/api/v1.1/researchers",
                 params: {search: $routeParams.search, token: localStorage.getItem("accessToken")}
             }).then(function(response) {
-                $scope.researchers = response.data;
-                if( !$.isArray(response.data) ||  !response.data.length ) {
+                $scope.researchers = sortByKey(response.data, 'name');
+                if(!$.isArray(response.data) || !response.data.length) {
                     swal("There are no researchers that match your search", null, "info");
                 }
             }, function(error){
@@ -49,51 +49,34 @@ var app = angular.module("ResearcherManagerApp")
                 researcherId : "",
                 link : "",
                 idGroup : "",
+                professionalSituation : "",
+                keywords : "",
+                viewURL : "",
                 idDepartment : "",
-                professionalSituation : ""
-            }
-            
-            $scope.updateResearcher={
-                idResearcher: "",
-                name : "",
-                phone : "",
-                orcid : "",
-                researcherId : "",
-                link : "",
-                idGroup : "",
-                idDepartment : "",
-                professionalSituation : ""
+                departmentViewURL : "",
+                departmentName : ""
             }
         }
     
         /* Añade un investigador */
         $scope.addResearcher = function (){
             
-            $http
-                .post("/api/v1/researchers/",$scope.newResearcher)
+            /* Almaceno el campo viewURL para la integración entre recursos */
+            $scope.newResearcher.viewURL = "https://si1718-dfr-researchers.herokuapp.com/#!/researchers/" + $scope.newResearcher.orcid + "/edit";
+            
+            if ($scope.newResearcher.orcid != null && $scope.newResearcher.orcid != "" &&
+                $scope.newResearcher.name != null && $scope.newResearcher.name != ""){
+                $http
+                .post("/api/v1.1/researchers?token=" + localStorage.getItem("accessToken"), $scope.newResearcher)
                 .then(function(response) {
                     refresh();
-                    swal("Researcher stored!", "success");
+                    swal("Researcher stored!", null, "success");
                 }, function(error){
                     swal("Please check all the fields. Thank you so much!", null, "warning");
                 });
-            
-        }
-        
-        /* Edita un investigador por el idResearcher */
-        $scope.editResearcher = function (idResearcher){
-            
-            $http
-                .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
-                .then(function(response) {
-                    refresh();
-                    $scope.openEditModal(idResearcher);
-                    $scope.errorsUpdate = false;
-                    $scope.successUpdate = true;
-                }, function(error){
-                    $scope.errorsUpdate = true;
-                    $scope.successUpdate = false;
-                });
+            }else{
+                swal("Please check all the fields. Thank you so much!", null, "warning");
+            }
             
         }
 
@@ -110,8 +93,11 @@ var app = angular.module("ResearcherManagerApp")
               closeOnConfirm: false
             },
             function(){
-                $http
-                .delete("/api/v1/researchers/"+idResearcher)
+                $http({
+                    url: "/api/v1.1/researchers/"+idResearcher,
+                    method: "delete",
+                    params: {token: localStorage.getItem("accessToken")}
+                })
                 .then(function(response) {
                     refresh();
                     swal("Deleted!", "Your researcher has been deleted.", "success");
@@ -126,28 +112,11 @@ var app = angular.module("ResearcherManagerApp")
         $scope.deleteAllResearchers = function (){
             
             $http
-                .delete("/api/v1/researchers/")
+                .delete("/api/v1.1/researchers?token=" + localStorage.getItem("accessToken"))
                 .then(function(response) {
                     refresh();
                 });
             
-        }
-        
-        /* Abre modal y obtiene información de un investigador */
-        $scope.openEditModal = function (idResearcher){
-            
-            $http
-                .get("/api/v1/researchers/"+idResearcher)
-                .then(function(response) {
-                    $scope.updateResearcher = response.data;
-                });
-                
-        }
-        
-        /* Cierra el modal y elimina el mensaje de información existente que hubiese */
-        $scope.closeEditModal = function (){
-            $scope.errorsUpdate = false;
-            $scope.successUpdate = false;
         }
 
         refresh();
@@ -161,3 +130,10 @@ app.filter('startFrom', function() {
         return input.slice(start);
     }
 });
+
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}

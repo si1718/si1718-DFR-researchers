@@ -97,8 +97,12 @@ router.post('/researchers', VerifyToken, function (request, response) {
                             researcherId: request.body.researcherId,
                             link: request.body.link,
                             idGroup: request.body.idGroup,
+                            professionalSituation: request.body.professionalSituation,
+                            keywords: request.body.keywords,
+                            viewURL: request.body.viewURL,
                             idDepartment: request.body.idDepartment,
-                            professionalSituation: request.body.professionalSituation
+                            departmentViewURL: request.body.departmentViewURL,
+                            departmentName: request.body.departmentName
                             
                         }, 
                         function (err, user) {
@@ -205,5 +209,71 @@ router.delete('/researchers/:idResearcher', VerifyToken, function (request, resp
         });
     }
 });
+
+
+/* ************************************* API GRAPHS ****************************************** */
+/* Método GET que devuelve todos los departamentos que se encuentran en la base de datos junto al número de investigadores que contiene */
+router.get('/departmentsGraph', VerifyToken, function (request, response) {
+    console.log("INFO: New GET request to /departmentsGraph");
+    
+    var aggregation = [
+        {
+            "$match": {
+                "idDepartment": { "$exists": true, "$ne": null }
+            }
+        },
+        {
+            "$match": {
+                "idDepartment": { "$exists": true, "$ne": "" }
+            }
+        },
+        {
+            $group: {_id: "$idDepartment",count: {$sum: 1} }
+        }
+    ];
+    
+    researcherModel.aggregate(aggregation, function(err, departments){
+        if (err) {
+            console.error('WARNING: Error getting data from DB');
+            response.sendStatus(500); // internal server error
+        } else {
+            console.log("INFO: Sending departments: " + JSON.stringify(departments, 2, null));
+            response.send(departments);
+        }
+    });
+});
+
+
+/* Método GET que devuelve todos los grupos que se encuentran en la base de datos junto al número de investigadores que contiene */
+router.get('/groupsGraph', VerifyToken, function (request, response) {
+    console.log("INFO: New GET request to /groupsGraph");
+    
+    var aggregation = [
+        {
+            "$match": {
+                "idGroup": { "$exists": true, "$ne": null }
+            }
+        },
+        {
+            "$match": {
+                "idGroup": { "$exists": true, "$ne": "" }
+            }
+        },
+        {
+            $group: {_id: "$idGroup",count: {$sum: 1} }
+        }
+    ];
+    
+    researcherModel.aggregate(aggregation, function(err, groups){
+        if (err) {
+            console.error('WARNING: Error getting data from DB');
+            response.sendStatus(500); // internal server error
+        } else {
+            console.log("INFO: Sending groups: " + JSON.stringify(groups, 2, null));
+            response.send(groups);
+        }
+    });
+});
+
 
 module.exports = router;

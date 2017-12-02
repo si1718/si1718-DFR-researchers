@@ -47,6 +47,7 @@
     
     <!-- Secure API -->
     <script type="text/javascript" src="/controller/list-secure-ctrl.js"></script>
+    <script type="text/javascript" src="/controller/edit-secure-ctrl.js"></script>
     
     <script type="text/javascript" src="/bower_components/auth0-lock/build/lock.min.js"></script>
     <script>
@@ -54,7 +55,7 @@
       var domain = 'si1718-dfr-researchers.eu.auth0.com';
       var lock = new Auth0Lock(clientId, domain, {
         auth: {
-          redirectUrl: 'https://si1718-dfr-researchers.herokuapp.com/#!/secure/researchers',
+          redirectUrl: 'https://si1718-dfr-researchers-si1718davidfr.c9users.io/#!/secure/researchers',
           responseType: 'code',
           params: {
               responseType: 'id_token token',
