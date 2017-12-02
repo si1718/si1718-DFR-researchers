@@ -2,7 +2,7 @@ var app = angular.module("ResearcherManagerApp")
    .controller("ListCtrl", ["$scope", "$http", "$routeParams", "$rootScope", "$filter", function($scope, $http, $routeParams, $rootScope, $filter) {
         
         $scope.currentPage = 0;
-        $scope.pageSize = 5;
+        $scope.pageSize = 10;
         $scope.researchers = [];
         
         $scope.getData = function () {
@@ -32,9 +32,10 @@ var app = angular.module("ResearcherManagerApp")
                 url: "/api/v1/researchers",
                 params: $routeParams
             }).then(function(response) {
-                $scope.researchers = response.data;
                 if( !$.isArray(response.data) ||  !response.data.length ) {
                     swal("There are no researchers that match your search", null, "info");
+                }else{
+                    $scope.researchers = sortByKey(response.data, 'name');
                 }
             }, function(error){
                 swal("There are no researchers that match your search", null, "info");
@@ -53,17 +54,6 @@ var app = angular.module("ResearcherManagerApp")
                 professionalSituation : ""
             }
             
-            $scope.updateResearcher={
-                idResearcher: "",
-                name : "",
-                phone : "",
-                orcid : "",
-                researcherId : "",
-                link : "",
-                idGroup : "",
-                idDepartment : "",
-                professionalSituation : ""
-            }
         }
     
         /* Añade un investigador */
@@ -137,23 +127,6 @@ var app = angular.module("ResearcherManagerApp")
                 });
             
         }
-        
-        /* Abre modal y obtiene información de un investigador */
-        $scope.openEditModal = function (idResearcher){
-            
-            $http
-                .get("/api/v1/researchers/"+idResearcher)
-                .then(function(response) {
-                    $scope.updateResearcher = response.data;
-                });
-                
-        }
-        
-        /* Cierra el modal y elimina el mensaje de información existente que hubiese */
-        $scope.closeEditModal = function (){
-            $scope.errorsUpdate = false;
-            $scope.successUpdate = false;
-        }
 
         refresh();
 
@@ -166,4 +139,11 @@ app.filter('startFrom', function() {
         return input.slice(start);
     }
 });
+
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
             
