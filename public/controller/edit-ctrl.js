@@ -71,6 +71,13 @@ var app = angular.module("ResearcherManagerApp")
         /* Edita un investigador por el idResearcher */
         $scope.editResearcher = function (idResearcher){
             
+            /* Compruebo si el contenido no es una URL, porque eso significa de que no ha sido validado y 
+                entonces actualizo a NULL los parametros departmentViewURL and departmentName */
+            if (!isURL($scope.updateResearcher.idDepartment)){
+                $scope.updateResearcher.departmentViewURL = null;
+                $scope.updateResearcher.departmentName = null;
+            }
+            
             $http
                 .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
                 .then(function(response) {
@@ -98,37 +105,39 @@ var app = angular.module("ResearcherManagerApp")
                     }else{
             
                         var departmentObj = response.data;
-                    
-                        /* Identificar devuelto por el recurso departamentos */
-                        var idDepartment = departmentObj[0].idDepartment;
                         
-                        /* Nombre del departamento */
-                        var departmentName = departmentObj[0].department;
-                        
-                        /* Endpoint API Department */
-                        var endpointAPIDepartment = "https://si1718-amc-departments.herokuapp.com/api/v1/departments/" + idDepartment;
-                        
-                        /* Enlace al recurso angular del departamento */
-                        var departmentViewURL = "https://si1718-amc-departments.herokuapp.com/#!/department/" + idDepartment;
-                        
-                        console.log(departmentName);
-                        console.log(endpointAPIDepartment);
-                        console.log(departmentViewURL);
-                        
-                        /* ACTUALIZO EL SCOPE DE RESEARCHER */
-                        $scope.updateResearcher.departmentName = departmentName;
-                        $scope.updateResearcher.departmentViewURL = departmentViewURL;
-                        $scope.updateResearcher.idDepartment = endpointAPIDepartment;
-                        
-                        $http
-                        .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
-                        .then(function(response) {
-                            refresh();
-                            swal("Researcher edited!", null, "success");
-                        }, function(error){
-                            swal("Please check all the fields. Thank you so much!", null, "warning");
-                        });
-                        
+                        if($.isArray(departmentObj) && departmentObj.length==0) {
+                            swal("Department not found. Try againt later.", "Thank you so much!", "info");
+                        }else{
+                            console.log("asdadadada");
+                            /* Identificar devuelto por el recurso departamentos */
+                            var idDepartment = departmentObj[0].idDepartment;
+                            
+                            /* Nombre del departamento */
+                            var departmentName = departmentObj[0].department;
+                            
+                            /* Endpoint API Department */
+                            var endpointAPIDepartment = "https://si1718-amc-departments.herokuapp.com/api/v1/departments/" + idDepartment;
+                            
+                            /* Enlace al recurso angular del departamento */
+                            var departmentViewURL = "https://si1718-amc-departments.herokuapp.com/#!/department/" + idDepartment;
+                            
+                            /* ACTUALIZO EL SCOPE DE RESEARCHER */
+                            $scope.updateResearcher.departmentName = departmentName;
+                            $scope.updateResearcher.departmentViewURL = departmentViewURL;
+                            $scope.updateResearcher.idDepartment = endpointAPIDepartment;
+                            
+                            $http
+                            .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
+                            .then(function(response) {
+                                refresh();
+                                swal("Department validated!", null, "success");
+                            }, function(error){
+                                swal("Please check all the fields. Thank you so much!", null, "warning");
+                            });
+                            
+                        }
+  
                     }
                     
                 }, function(error){
