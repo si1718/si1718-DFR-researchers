@@ -96,10 +96,12 @@ router.post('/researchers', function (request, response) {
                             researcherId: request.body.researcherId,
                             link: request.body.link,
                             idGroup: request.body.idGroup,
-                            idDepartment: request.body.idDepartment,
                             professionalSituation: request.body.professionalSituation,
-                            keywords: request.body.keywords
-                            
+                            keywords: request.body.keywords,
+                            viewURL: request.body.viewURL,
+                            idDepartment: request.body.idDepartment,
+                            departmentViewURL: request.body.departmentViewURL,
+                            departmentName: request.body.departmentName
                         }, 
                         function (err, user) {
                             if (err) return response.status(500).send(err.message);

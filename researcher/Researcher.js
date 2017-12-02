@@ -17,15 +17,25 @@ var ResearcherSchema = new mongoose.Schema({
   idGroup: {
     type: String
   },
-  idDepartment: {
-    type: String
-  },
   professionalSituation: {
     type: String
   },
   keywords: {
     type: String
+  },
+  viewURL: {
+    type: String
+  },
+  idDepartment: {
+    type: String
+  },
+  departmentViewURL: {
+    type: String
+  },
+  departmentName: {
+    type: String
   }
+  
 });
 mongoose.model('Researcher', ResearcherSchema);
 

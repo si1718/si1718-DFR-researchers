@@ -72,5 +72,55 @@ var app = angular.module("ResearcherManagerApp")
             
         }
         
+        /* Validar un departamento */
+        $scope.validateDepartment = function (idResearcher, idDepartment){
+            
+            if (!idDepartment){
+                swal("Check if the department is empty or null. Thank you so much!", null, "warning");
+            }else{
+                $http
+                .get("https://si1718-amc-departments.herokuapp.com/api/v1/departments?department="+idDepartment)
+                .then(function(response) {
+                    
+                    var departmentObj = response.data;
+                    
+                    /* Identificar devuelto por el recurso departamentos */
+                    var idDepartment = departmentObj[0].idDepartment;
+                    
+                    /* Nombre del departamento */
+                    var departmentName = departmentObj[0].department;
+                    
+                    /* Endpoint API Department */
+                    var newIdDepartment = "https://si1718-amc-departments.herokuapp.com/api/v1/departments/" + idDepartment;
+                    
+                    /* Enlace al recurso angular del investigador */
+                    var viewURL = "https://si1718-dfr-researchers.herokuapp.com/#!/researchers/" + idResearcher + "/edit"
+                    
+                    /* Enlace al recurso angular del departamento */
+                    var departmentViewURL = "https://si1718-amc-departments.herokuapp.com/#!/department/" + idDepartment;
+                    
+                    console.log(viewURL);
+                    console.log(departmentName);
+                    console.log(newIdDepartment);
+                    console.log(departmentViewURL);
+                    
+                    /*$http
+                    .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
+                    .then(function(response) {
+                        refresh();
+                        swal("Researcher edited!", null, "success");
+                    }, function(error){
+                        swal("Please check all the fields. Thank you so much!", null, "warning");
+                    });*/
+                    
+                    
+                }, function(error){
+                    swal("Check if the department is empty or null. Thank you so much!", null, "warning");
+                });
+            }
+            
+            
+        }
+        
         refresh();
 }]);
