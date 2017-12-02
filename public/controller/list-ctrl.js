@@ -50,15 +50,21 @@ var app = angular.module("ResearcherManagerApp")
                 researcherId : "",
                 link : "",
                 idGroup : "",
-                idDepartment : "",
                 professionalSituation : "",
-                keywords : ""
+                keywords : "",
+                viewURL : "",
+                idDepartment : "",
+                departmentViewURL : "",
+                departmentName : ""
             }
             
         }
     
         /* Añade un investigador */
         $scope.addResearcher = function (){
+            
+            /* Almaceno el campo viewURL para la integración entre recursos */
+            $scope.newResearcher.viewURL = "https://si1718-dfr-researchers.herokuapp.com/#!/researchers/" + $scope.newResearcher.orcid + "/edit";
             
             if ($scope.newResearcher.orcid != null && $scope.newResearcher.orcid != "" &&
                 $scope.newResearcher.name != null && $scope.newResearcher.name != ""){

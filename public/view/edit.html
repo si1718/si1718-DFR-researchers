@@ -47,25 +47,19 @@
         </div>
             
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="formControlLink">Link</label>
                     <input type="text" class="form-control" id="formControlLink" ng-model="updateResearcher.link" placeholder="Enter Link">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="formControlIdGroup">Group</label>
                     <input type="text" class="form-control" id="formControlIdGroup" ng-model="updateResearcher.idGroup" placeholder="Enter group">
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="formControlDepartment">Department</label>
-                    <input type="text" class="form-control" id="formControlDepartment" ng-model="updateResearcher.idDepartment" placeholder="Enter department">
-                </div>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="formControlProfessionalSituation">Professional Situation</label>
                     <input type="text" class="form-control" id="formControlProfessionalSituation" ng-model="updateResearcher.professionalSituation" placeholder="Enter professional situation">
@@ -83,8 +77,23 @@
         </div>
         
         <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="formControlDepartment">Department</label>
+                    <input type="text" class="form-control" id="formControlDepartment" ng-model="updateResearcher.idDepartment" placeholder="Enter department">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="formControlDepartmentName"></label>
+                    <p id="formControlDepartmentName"><a href="{{updateResearcher.departmentViewURL}}" target="_blank">{{updateResearcher.departmentName}}</a></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
             <div class="col-md-12 col-xs-12">
-                <button class="btn btn-info pull-left" ng-click="validateDepartment(updateResearcher.idResearcher, updateResearcher.idDepartment)">Validate Department</button>
+                <button class="btn btn-info pull-left" ng-hide="checkValidate" ng-show="!checkValidate" ng-click="validateDepartment(updateResearcher.idDepartment)">Validate Department</button>
                 <button class="btn btn-primary pull-right" ng-click="editResearcher(updateResearcher.idResearcher)">Save changes</button>
                 <a class="btn btn-warning pull-right" href="/#!/researchers" style="margin-right: 10px;">Back</a>
             </div>
