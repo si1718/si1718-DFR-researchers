@@ -35,7 +35,8 @@ var app = angular.module("ResearcherManagerApp")
                             link : "",
                             idGroup : "",
                             idDepartment : "",
-                            professionalSituation : ""
+                            professionalSituation : "",
+                            keywords : ""
                         }
                     }
                 }, function(error){
@@ -51,7 +52,8 @@ var app = angular.module("ResearcherManagerApp")
                     link : "",
                     idGroup : "",
                     idDepartment : "",
-                    professionalSituation : ""
+                    professionalSituation : "",
+                    keywords : ""
                 }
             }
         }

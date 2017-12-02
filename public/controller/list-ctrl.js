@@ -51,7 +51,8 @@ var app = angular.module("ResearcherManagerApp")
                 link : "",
                 idGroup : "",
                 idDepartment : "",
-                professionalSituation : ""
+                professionalSituation : "",
+                keywords : ""
             }
             
         }

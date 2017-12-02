@@ -97,7 +97,8 @@ router.post('/researchers', function (request, response) {
                             link: request.body.link,
                             idGroup: request.body.idGroup,
                             idDepartment: request.body.idDepartment,
-                            professionalSituation: request.body.professionalSituation
+                            professionalSituation: request.body.professionalSituation,
+                            keywords: request.body.keywords
                             
                         }, 
                         function (err, user) {

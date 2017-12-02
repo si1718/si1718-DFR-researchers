@@ -22,6 +22,9 @@ var ResearcherSchema = new mongoose.Schema({
   },
   professionalSituation: {
     type: String
+  },
+  keywords: {
+    type: String
   }
 });
 mongoose.model('Researcher', ResearcherSchema);
