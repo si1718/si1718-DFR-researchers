@@ -56,6 +56,7 @@ function pieChartDepartment(id, data, customTitle){
                 var jsonObject = {};
                 jsonObject["count"] = department["researchers"].length;
                 jsonObject["_id"] = department["department"];
+                jsonObject["url"] = "https://si1718-amc-departments.herokuapp.com/#!/department/" + department["idDepartment"];
                 
                 departmentArray.push(jsonObject);
             }
@@ -90,6 +91,13 @@ function pieChartDepartment(id, data, customTitle){
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
+                },
+                point: {
+                    events: {
+                        click: function() {
+                            window.open(this.options.url, '_blank', 'location=yes,height=684,width=606,scrollbars=yes,status=yes');
+                        }
+                    }
                 }
             }
         },
@@ -118,6 +126,7 @@ function pieChartGroup(id, data, customTitle){
                 var jsonObject = {};
                 jsonObject["count"] = group["components"].length;
                 jsonObject["_id"] = group["name"];
+                jsonObject["url"] = "https://si1718-rgg-groups.herokuapp.com/#!/group/" + group["idGroup"];
                 
                 groupArray.push(jsonObject);
             }
@@ -151,6 +160,13 @@ function pieChartGroup(id, data, customTitle){
                     format: '<b>{point._id}</b>: {point.count}',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                point: {
+                    events: {
+                        click: function() {
+                            window.open(this.options.url, '_blank', 'location=yes,height=684,width=606,scrollbars=yes,status=yes');
+                        }
                     }
                 }
             }
