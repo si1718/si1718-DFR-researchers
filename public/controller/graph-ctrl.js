@@ -91,13 +91,6 @@ function pieChartDepartment(id, data, customTitle){
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
-                },
-                point: {
-                    events: {
-                        click: function() {
-                            window.open(this.options.url, '_blank', 'location=yes,height=684,width=606,scrollbars=yes,status=yes');
-                        }
-                    }
                 }
             }
         },
@@ -160,13 +153,6 @@ function pieChartGroup(id, data, customTitle){
                     format: '<b>{point._id}</b>: {point.count}',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-                },
-                point: {
-                    events: {
-                        click: function() {
-                            window.open(this.options.url, '_blank', 'location=yes,height=684,width=606,scrollbars=yes,status=yes');
-                        }
                     }
                 }
             }

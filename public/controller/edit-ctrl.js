@@ -65,11 +65,9 @@ var app = angular.module("ResearcherManagerApp")
                 .put("/api/v1/researchers/"+idResearcher,$scope.updateResearcher)
                 .then(function(response) {
                     refresh();
-                    $scope.errorsUpdate = false;
-                    $scope.successUpdate = true;
+                    swal("Researcher edited!", null, "success");
                 }, function(error){
-                    $scope.errorsUpdate = true;
-                    $scope.successUpdate = false;
+                    swal("Please check all the fields. Thank you so much!", null, "warning");
                 });
             
         }

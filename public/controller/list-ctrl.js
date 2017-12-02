@@ -66,7 +66,7 @@ var app = angular.module("ResearcherManagerApp")
                 .post("/api/v1/researchers/",$scope.newResearcher)
                 .then(function(response) {
                     refresh();
-                    swal("Researcher stored!", "success");
+                    swal("Researcher stored!", null, "success");
                 }, function(error){
                     swal("Please check all the fields. Thank you so much!", null, "warning");
                 });
