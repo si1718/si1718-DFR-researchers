@@ -23,7 +23,7 @@ var app = angular.module("ResearcherManagerApp")
                     .get("/api/v1/researchers/" + idResearcher)
                     .then(function(response) {
                     $scope.updateResearcher = response.data;
-                    if( !$scope.updateResearcher.idResearcher &&  !$scope.updateResearcher.orcid ) {
+                    if( !$scope.updateResearcher.idResearcher && !$scope.updateResearcher.name ) {
                         swal("There are no researcher that match your search", null, "info");
                         
                         $scope.updateResearcher={
