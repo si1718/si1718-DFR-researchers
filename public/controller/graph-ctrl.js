@@ -1,5 +1,5 @@
 angular.module("ResearcherManagerApp")
-    .controller("GraphCtrl", ["$scope", "$http", "$rootScope", function($scope, $http, $rootScope) {
+    .controller("GraphCtrl", ["$scope", "$http", "$rootScope", "$q", function($scope, $http, $rootScope, $q) {
         
         $scope.sectionTitle = "Graphs";
         
@@ -55,48 +55,46 @@ angular.module("ResearcherManagerApp")
                         arrayORCID.push(thirdORCID);
                         arrayORCID.push("0000-0001-9827-1834");
                         
-                        console.log(arrayORCID);
-                        
                         $scope.countResearcher = 0;
-                        
-                        for(var i=0;i<arrayORCID.length;i++){
-                            var elsevierURL = "https://api.elsevier.com/content/search/scopus?query=orcid(" + arrayORCID[i] + ")&apiKey=5c6ba1243380244ef3952111422b0865&httpAccept=application/json";
-                            $http
-                                .get(elsevierURL)
-                                .then(function(response) {
-                                    var result = parseInt(response.data["search-results"]["opensearch:totalResults"]);
-                                    if (result == 1){
-                                        console.log("entra");
-                                        $scope.countResearcher += 1;    
-                                    }else{
-                                        console.log("no entra");
-                                    }
-                            }, function(error){
-                                swal("There are problems with Elsevier. Try later. Thank you so much!", null, "info");
-                            });
-                            
-                            if (i==arrayORCID.length-1){
-                                barColumn("barCharResearchers", 4 , $scope.countResearcher);
-                            }
-                            
-                        }
-                        /* FINALIZA EL BUCLE Y MUESTRO LOS RESULTADOS */
-                        
+                        requestElsevier(arrayORCID);
                         
                     }
                 }, function(error){
                     swal("There are no researchers", null, "info");
                 });
         }
+        
+        /* Solicita a Elsevier información acerca de un investigador */
+        function requestElsevier(arrayORCID){
+            var arr = [];
+            
+            for(var i=0;i<arrayORCID.length;i++){
+                var elsevierURL = "https://api.elsevier.com/content/search/scopus?query=orcid(" + arrayORCID[i] + ")&apiKey=5c6ba1243380244ef3952111422b0865&httpAccept=application/json";
+                var requestElsevier = $http
+                    .get(elsevierURL)
+                    .then(function(response) {
+                        var result = parseInt(response.data["search-results"]["opensearch:totalResults"]);
+                        if (result == 1){
+                            $scope.countResearcher += 1;    
+                        }
+                }, function(error){
+                    swal("There are problems with Elsevier. Try later. Thank you so much!", null, "info");
+                });
+                
+                arr.push(requestElsevier);
+            }
+            
+            $q.all(arr).then(function (ret) {
+                barColumn("barCharResearchers", 4 , $scope.countResearcher);
+            });
+        }
 
 
         refresh();
 
     }]);
-    
-    
-    
-
+  
+  
 /* ************** GRAPHS FUNCTIONS ***************** */
 
 function pieChartDepartment(id, data, customTitle){
@@ -146,6 +144,13 @@ function pieChartDepartment(id, data, customTitle){
                     format: '<b>{point._id}</b>: {point.count}',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                point: {
+                    events: {
+                        click: function() {
+                            window.open(this.options.url, '_blank', 'location=yes,height=684,width=606,scrollbars=yes,status=yes');
+                        }
                     }
                 }
             }
@@ -210,6 +215,13 @@ function pieChartGroup(id, data, customTitle){
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
+                },
+                point: {
+                    events: {
+                        click: function() {
+                            window.open(this.options.url, '_blank', 'location=yes,height=684,width=606,scrollbars=yes,status=yes');
+                        }
+                    }
                 }
             }
         },
@@ -233,7 +245,7 @@ function barColumn(id, data1, data2){
             text: 'Three researchers randomly selected'
         },
         subtitle: {
-            text: 'Source: <a href="https://dev.elsevier.com">Elsevier</a> & <a href="http://si1718-dfr-researchers.herokuapp.com/#!/">si1718-dfr-researchers</a>'
+            text: 'Source: <a href="https://dev.elsevier.com" target="_blank">Elsevier</a> & <a href="http://si1718-dfr-researchers.herokuapp.com/#!/" target="_blank">si1718-dfr-researchers</a>'
         },
         xAxis: {
             categories: ['Contrast'],
