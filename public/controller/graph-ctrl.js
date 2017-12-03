@@ -74,7 +74,7 @@ angular.module("ResearcherManagerApp")
             var arr = [];
             
             for(var i=0;i<arrayORCID.length;i++){
-                var elsevierURL = "https://api.elsevier.com/content/search/scopus?query=orcid(" + arrayORCID[i] + ")&apiKey=5c6ba1243380244ef3952111422b0865&httpAccept=application/json";
+                var elsevierURL = "https://api.elsevier.com/content/search/scopus?query=orcid(" + arrayORCID[i] + ")&apiKey=9be7ee9ada388177ad161809f3606cb0&httpAccept=application/json";
                 var requestElsevier = $http
                     .get(elsevierURL)
                     .then(function(response) {
