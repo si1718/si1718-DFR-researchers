@@ -34,12 +34,68 @@ angular.module("ResearcherManagerApp")
                     
                     pieChartGroup("group_graph", $scope.dataAux, "Groups that have more than 40 researchers");
                 });
+                
+            /* Llama a la API para obtener todos los investigadores del propio sistema */
+            $http
+                .get("/api/v1/researchers")
+                .then(function(response) {
+                    
+                    if(!$.isArray(response.data) || !response.data.length) {
+                        swal("There are no researchers", null, "info");
+                    }else{
+                        $scope.researchersWithORCID = response.data.filter(function(v){return v.orcid !==null && v.orcid !==''});;
+                        
+                        var firstORCID = $scope.researchersWithORCID[Math.floor(Math.random()*$scope.researchersWithORCID.length)].orcid;
+                        var secondORCID = $scope.researchersWithORCID[Math.floor(Math.random()*$scope.researchersWithORCID.length)].orcid;
+                        var thirdORCID = $scope.researchersWithORCID[Math.floor(Math.random()*$scope.researchersWithORCID.length)].orcid;
+                        
+                        var arrayORCID = [];
+                        arrayORCID.push(firstORCID);
+                        arrayORCID.push(secondORCID);
+                        arrayORCID.push(thirdORCID);
+                        arrayORCID.push("0000-0001-9827-1834");
+                        
+                        console.log(arrayORCID);
+                        
+                        $scope.countResearcher = 0;
+                        
+                        for(var i=0;i<arrayORCID.length;i++){
+                            var elsevierURL = "https://api.elsevier.com/content/search/scopus?query=orcid(" + arrayORCID[i] + ")&apiKey=5c6ba1243380244ef3952111422b0865&httpAccept=application/json";
+                            $http
+                                .get(elsevierURL)
+                                .then(function(response) {
+                                    var result = parseInt(response.data["search-results"]["opensearch:totalResults"]);
+                                    if (result == 1){
+                                        console.log("entra");
+                                        $scope.countResearcher += 1;    
+                                    }else{
+                                        console.log("no entra");
+                                    }
+                            }, function(error){
+                                swal("There are problems with Elsevier. Try later. Thank you so much!", null, "info");
+                            });
+                            
+                            if (i==arrayORCID.length-1){
+                                barColumn("barCharResearchers", 4 , $scope.countResearcher);
+                            }
+                            
+                        }
+                        /* FINALIZA EL BUCLE Y MUESTRO LOS RESULTADOS */
+                        
+                        
+                    }
+                }, function(error){
+                    swal("There are no researchers", null, "info");
+                });
         }
 
 
         refresh();
 
     }]);
+    
+    
+    
 
 /* ************** GRAPHS FUNCTIONS ***************** */
 
@@ -164,6 +220,67 @@ function pieChartGroup(id, data, customTitle){
             name: 'Researchers',
             colorByPoint: true,
             data: groupArray
+        }]
+    });
+}
+
+function barColumn(id, data1, data2){
+    Highcharts.chart(id, {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Three researchers randomly selected'
+        },
+        subtitle: {
+            text: 'Source: <a href="https://dev.elsevier.com">Elsevier</a> & <a href="http://si1718-dfr-researchers.herokuapp.com/#!/">si1718-dfr-researchers</a>'
+        },
+        xAxis: {
+            categories: ['Contrast'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Researchers',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' researchers'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'si1718-dfr-researchers',
+            data: [data1]
+        }, {
+            name: 'Elsevier API',
+            data: [data2]
         }]
     });
 }
