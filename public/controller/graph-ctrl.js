@@ -43,7 +43,8 @@ angular.module("ResearcherManagerApp")
                     if(!$.isArray(response.data) || !response.data.length) {
                         swal("There are no researchers", null, "info");
                     }else{
-                        $scope.researchersWithORCID = response.data.filter(function(v){return v.orcid !==null && v.orcid !==''});;
+                        $scope.totalResearchers = response.data;
+                        $scope.researchersWithORCID = response.data.filter(function(v){return v.orcid !==null && v.orcid !==''});
                         
                         var firstORCID = $scope.researchersWithORCID[Math.floor(Math.random()*$scope.researchersWithORCID.length)].orcid;
                         var secondORCID = $scope.researchersWithORCID[Math.floor(Math.random()*$scope.researchersWithORCID.length)].orcid;
@@ -56,6 +57,10 @@ angular.module("ResearcherManagerApp")
                         arrayORCID.push("0000-0001-9827-1834");
                         
                         $scope.countResearcher = 0;
+                        
+                        /* Genera un gráfico comparativo entre investigadores con ORCID e investigadores sin ORCID*/
+                        barColumnComparativeORCID("researchersORCIDvsNoORCID", $scope.researchersWithORCID.length, $scope.totalResearchers.length - $scope.researchersWithORCID.length);
+                        /* Contrasta la información que tengo en mi API con la de Elsevier */
                         requestElsevier(arrayORCID);
                         
                     }
@@ -242,7 +247,7 @@ function barColumn(id, data1, data2){
             type: 'column'
         },
         title: {
-            text: 'Three researchers randomly selected'
+            text: 'Check the number of researchers that appears in Elsevier given four ORCID'
         },
         subtitle: {
             text: 'Source: <a href="https://dev.elsevier.com" target="_blank">Elsevier</a> & <a href="http://si1718-dfr-researchers.herokuapp.com/#!/" target="_blank">si1718-dfr-researchers</a>'
@@ -292,6 +297,67 @@ function barColumn(id, data1, data2){
             data: [data1]
         }, {
             name: 'Elsevier API',
+            data: [data2]
+        }]
+    });
+}
+
+function barColumnComparativeORCID(id, data1, data2){
+    Highcharts.chart(id, {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Researchers with ORCID vs without ORCID'
+        },
+        subtitle: {
+            text: 'Source: <a href="http://si1718-dfr-researchers.herokuapp.com/#!/" target="_blank">si1718-dfr-researchers</a>'
+        },
+        xAxis: {
+            categories: ['Comparative'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Researchers',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' researchers'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'ORCID',
+            data: [data1]
+        }, {
+            name: 'Without ORCID',
             data: [data2]
         }]
     });
