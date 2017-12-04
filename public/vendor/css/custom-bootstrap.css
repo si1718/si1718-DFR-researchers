@@ -28,3 +28,8 @@ fieldset legend {
     box-shadow: 0 0 0 5px #ddd;
     margin-left: 20px;
 }
+
+
+.col-centered{
+    text-align: center;
+}

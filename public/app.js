@@ -23,6 +23,11 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller: "EditCtrl"
             })
             
+            .when("/researchers/:idResearcher/view", {
+                templateUrl: "/view/view.html",
+                controller: "ViewCtrl"
+            })
+            
             .when("/secure",{
                 templateUrl: "/view/searchEngine-secure.html",
                 controller : "SearchEngineCtrl",
@@ -78,6 +83,11 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
             .when("/graphs",{
                 templateUrl: "/view/graph.html",
                 controller : "GraphCtrl"
+            })
+            
+            .when("/sections",{
+                templateUrl: "/view/sections.html",
+                controller : "SectionCtrl"
             })
             
             .otherwise({

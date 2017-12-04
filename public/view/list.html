@@ -131,8 +131,9 @@
                 </td>
                 <td>{{researcher.professionalSituation}}</td>
                 <td>
-                    <button class="btn btn-danger" ng-click="deleteResearcher(researcher.idResearcher)">Delete</button>
-                    <a class="btn btn-primary" id="addResearcher" href="#!/researchers/{{researcher.idResearcher}}/edit">Edit</a>
+                    <button class="btn btn-danger" ng-click="deleteResearcher(researcher.idResearcher)">Delete</button><br />
+                    <a class="btn btn-primary" id="addResearcher" href="#!/researchers/{{researcher.idResearcher}}/edit">Edit</a><br />
+                    <a class="btn btn-info" href="#!/researchers/{{researcher.idResearcher}}/view">View</a>
                 </td>
             </tr>
         </tbody>
