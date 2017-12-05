@@ -109,7 +109,7 @@ var app = angular.module("ResearcherManagerApp")
                         var departmentObj = response.data;
                         
                         if($.isArray(departmentObj) && departmentObj.length==0) {
-                            swal("Department not found. Try againt later.", "Thank you so much!", "info");
+                            swal("Department not found. Try again later.", "Thank you so much!", "info");
                         }else{
                             /* Identificar devuelto por el recurso departamentos */
                             var idDepartment = departmentObj[0].idDepartment;
