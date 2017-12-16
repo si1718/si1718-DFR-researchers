@@ -24,6 +24,9 @@ app.use('/api/v1', ResearcherController);
 var ResearcherSecureController = require(__root + 'researcher/ResearcherSecureController');
 app.use('/api/v1.1', ResearcherSecureController);
 
+var TweetCalculatedController = require(__root + 'tweetCalculated/TweetCalculatedController');
+app.use('/api/v1/tweets', TweetCalculatedController);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;

@@ -67,6 +67,72 @@ angular.module("ResearcherManagerApp")
                 }, function(error){
                     swal("There are no researchers", null, "info");
                 });
+                
+                
+            /* Llama a la API para obtener todos las keywords encontradas en los tweets */
+            $http
+                .get("/api/v1/tweets/tweetsCalculated")
+                .then(function(response) {
+                    
+                    if(!$.isArray(response.data) || !response.data.length) {
+                       swal("There are no keywords", null, "info");
+                    }else{
+                       $scope.keywords = response.data;
+                       
+                       /* Obtengo las keywords únicas */
+                       var uniqueKeywords= $.unique($scope.keywords.map(function (d) {return d.keyword;}));
+                       var uniqueDates= $.unique($scope.keywords.map(function (d) {return d.date;}));
+                       
+                       if(!$.isArray(uniqueKeywords) || !uniqueKeywords.length) {
+                            swal("There are no keywords", null, "info");
+                       }else{
+                           
+                            /* Array usado para representar los datos */
+                            var finalArray = [];
+                           
+                            /* Ordeno por fechas de forma ascendiente */
+                            $scope.keywords.sort(function(a,b) {
+                              a = a["date"].split('/').reverse().join('');
+                              b = b["date"].split('/').reverse().join('');
+                              return a > b ? 1 : a < b ? -1 : 0;
+                            });
+                            
+                            uniqueDates.sort(function(a,b) {
+                              a = a.split('/').reverse().join('');
+                              b = b.split('/').reverse().join('');
+                              return a > b ? 1 : a < b ? -1 : 0;
+                            });
+                            
+                            $.each(uniqueKeywords, function( keywordIndex, keywordValue ) {
+                                
+                                /* Genero un array con todos los campos a null y tamaño igual al número de fechas distintas */
+                                var arrayByKeyword= createArray(uniqueDates.length, null);
+                              
+                                $.each($scope.keywords, function( dataIndex, dataValue ) {
+                                  
+                                    if(keywordValue == dataValue["keyword"]){
+                                        arrayByKeyword[uniqueDates.indexOf(dataValue["date"])] = dataValue["count"];
+                                    }
+                                  
+                                });
+                                
+                                /* Aquí almaceno en el array finalArray el nombre de la keyword como serie y además el array de datos */
+                                var objAux = {};
+                                objAux["name"] = keywordValue;
+                                objAux["data"] = arrayByKeyword;
+                                finalArray.push(objAux);
+                            });
+                            
+                       }
+                       
+                       keywordsGraph("keywords_graph", $scope.keywords, "Keywords counted on twitter", uniqueDates, finalArray);
+                       
+                    }
+                }, function(error){
+                    swal("There are no keywords", null, "info");
+                });
+                
+                
         }
         
         /* Solicita a Elsevier información acerca de un investigador */
@@ -98,7 +164,18 @@ angular.module("ResearcherManagerApp")
         refresh();
 
     }]);
-  
+    
+/* UTILS FUNCTIONS */
+function createArray(len, itm) {
+    var arr1 = [itm],
+        arr2 = [];
+    while (len > 0) {
+        if (len & 1) arr2 = arr2.concat(arr1);
+        arr1 = arr1.concat(arr1);
+        len >>>= 1;
+    }
+    return arr2;
+}  
   
 /* ************** GRAPHS FUNCTIONS ***************** */
 
@@ -360,5 +437,52 @@ function barColumnComparativeORCID(id, data1, data2){
             name: 'Without ORCID',
             data: [data2]
         }]
+    });
+}
+
+
+function keywordsGraph(id, data, customTitle, uniqueDates, finalArray){
+    Highcharts.chart(id, {
+
+        title: {
+            text: customTitle
+        },
+    
+        yAxis: {
+            title: {
+                text: 'Keywords found'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+    
+        xAxis: {
+			categories: uniqueDates
+		},
+    
+        series: finalArray,
+    
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        },
+        
+        credits: {
+            enabled: false
+        }
+    
     });
 }
