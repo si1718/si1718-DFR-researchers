@@ -132,6 +132,70 @@ angular.module("ResearcherManagerApp")
                     swal("There are no keywords", null, "info");
                 });
                 
+            
+            /* Llama a la API para obtener los distintos idiomas encontrados en los tweets */
+            $http
+                .get("/api/v1/tweetsLanguage/tweetsLanguageCalculated")
+                .then(function(response) {
+                    
+                    if(!$.isArray(response.data) || !response.data.length) {
+                       swal("There are no languages", null, "info");
+                    }else{
+                       $scope.languages = response.data;
+                       
+                       /* Obtengo las languages únicas */
+                       var uniqueLanguages= $.unique($scope.languages.map(function (d) {return d.language;}));
+                       var uniqueDates= $.unique($scope.languages.map(function (d) {return d.date;}));
+                       
+                       if(!$.isArray(uniqueLanguages) || !uniqueLanguages.length) {
+                            swal("There are no languages", null, "info");
+                       }else{
+                           
+                            /* Array usado para representar los datos */
+                            var finalArray = [];
+                           
+                            /* Ordeno por fechas de forma ascendiente */
+                            $scope.languages.sort(function(a,b) {
+                              a = a["date"].split('/').reverse().join('');
+                              b = b["date"].split('/').reverse().join('');
+                              return a > b ? 1 : a < b ? -1 : 0;
+                            });
+                            
+                            uniqueDates.sort(function(a,b) {
+                              a = a.split('/').reverse().join('');
+                              b = b.split('/').reverse().join('');
+                              return a > b ? 1 : a < b ? -1 : 0;
+                            });
+                            
+                            $.each(uniqueLanguages, function( languageIndex, languageValue ) {
+                                
+                                /* Genero un array con todos los campos a null y tamaño igual al número de fechas distintas */
+                                var arrayByLanguage= createArray(uniqueDates.length, null);
+                              
+                                $.each($scope.languages, function( dataIndex, dataValue ) {
+                                  
+                                    if(languageValue == dataValue["language"]){
+                                        arrayByLanguage[uniqueDates.indexOf(dataValue["date"])] = dataValue["count"];
+                                    }
+                                  
+                                });
+                                
+                                /* Aquí almaceno en el array finalArray el nombre del idioma como serie y además el array de datos */
+                                var objAux = {};
+                                objAux["name"] = languageValue;
+                                objAux["data"] = arrayByLanguage;
+                                finalArray.push(objAux);
+                            });
+                            
+                       }
+                       
+                       keywordsGraph("tweetLanguages_graph", $scope.languages, "Languages  counted on twitter", uniqueDates, finalArray);
+                       
+                    }
+                }, function(error){
+                    swal("There are no languages", null, "info");
+                });
+                
                 
         }
         

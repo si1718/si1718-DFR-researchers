@@ -27,6 +27,9 @@ app.use('/api/v1.1', ResearcherSecureController);
 var TweetCalculatedController = require(__root + 'tweetCalculated/TweetCalculatedController');
 app.use('/api/v1/tweets', TweetCalculatedController);
 
+var TweetLanguageCalculatedController = require(__root + 'tweetLanguageCalculated/TweetLanguageCalculatedController');
+app.use('/api/v1/tweetsLanguage', TweetLanguageCalculatedController);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
