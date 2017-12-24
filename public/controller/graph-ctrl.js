@@ -17,22 +17,31 @@ angular.module("ResearcherManagerApp")
 
         function refresh() {
             
-            /* Llama a la API para obtener todos los departamentos */
+            /* Llama a la API para obtener todos los departamentos que tengan más de 100 investigadores */
             $http
-                .get("https://si1718-amc-departments.herokuapp.com/api/v1/departments")
+                .get("/api/v1/departmentsCalculated")
                 .then(function(response) {
                     $scope.data = response.data;
                     
                     pieChartDepartment("department_graph", $scope.data, "Departments that have more than 100 researchers");
                 });
                 
-            /* Llama a la API para obtener todos los departamentos */
+            /* Llama a la API para obtener todos los departamentos que tengan más de 40 investigadores */
             $http
-                .get("https://si1718-rgg-groups.herokuapp.com/api/v1/groups")
+                .get("/api/v1/groupsCalculated")
                 .then(function(response) {
                     $scope.dataAux = response.data;
                     
                     pieChartGroup("group_graph", $scope.dataAux, "Groups that have more than 40 researchers");
+                });
+                
+            /* Llama a la API para obtener el número de investigadores con/sin ORCID */
+            $http
+                .get("/api/v1/researchersCalculated")
+                .then(function(response) {
+
+                    /* Genera un gráfico comparativo entre investigadores con ORCID e investigadores sin ORCID*/
+                    barColumnComparativeORCID("researchersORCIDvsNoORCID", response.data[0].researchersWithORCID, response.data[0].researchersWithoutORCID);
                 });
                 
             /* Llama a la API para obtener todos los investigadores del propio sistema */
@@ -58,8 +67,6 @@ angular.module("ResearcherManagerApp")
                         
                         $scope.countResearcher = 0;
                         
-                        /* Genera un gráfico comparativo entre investigadores con ORCID e investigadores sin ORCID*/
-                        barColumnComparativeORCID("researchersORCIDvsNoORCID", $scope.researchersWithORCID.length, $scope.totalResearchers.length - $scope.researchersWithORCID.length);
                         /* Contrasta la información que tengo en mi API con la de Elsevier */
                         requestElsevier(arrayORCID);
                         
@@ -71,7 +78,7 @@ angular.module("ResearcherManagerApp")
                 
             /* Llama a la API para obtener todos las keywords encontradas en los tweets */
             $http
-                .get("/api/v1/tweets/tweetsCalculated")
+                .get("/api/v1/tweetsCalculated")
                 .then(function(response) {
                     
                     if(!$.isArray(response.data) || !response.data.length) {
@@ -135,7 +142,7 @@ angular.module("ResearcherManagerApp")
             
             /* Llama a la API para obtener los distintos idiomas encontrados en los tweets */
             $http
-                .get("/api/v1/tweetsLanguage/tweetsLanguageCalculated")
+                .get("/api/v1/tweetsLanguageCalculated")
                 .then(function(response) {
                     
                     if(!$.isArray(response.data) || !response.data.length) {
@@ -245,9 +252,11 @@ function createArray(len, itm) {
 
 function pieChartDepartment(id, data, customTitle){
     
-    var departmentArray = [];
+    var departmentArray = data;
     
-    for(var i = 0; i < data.length; i++) {
+    //var departmentArray = [];
+    
+    /*for(var i = 0; i < data.length; i++) {
         var department = data[i];
         
         if (department["researchers"] != undefined && department["researchers"] != null && department["researchers"].length > 0){
@@ -261,7 +270,7 @@ function pieChartDepartment(id, data, customTitle){
                 departmentArray.push(jsonObject);
             }
         }
-    }
+    }*/
     
     $.each(departmentArray, function (i, point) {
         point.y = point.count;
@@ -315,9 +324,11 @@ function pieChartDepartment(id, data, customTitle){
 
 function pieChartGroup(id, data, customTitle){
     
-    var groupArray = [];
+    var groupArray = data;
     
-    for(var i = 0; i < data.length; i++) {
+    //var groupArray = [];
+    
+    /*for(var i = 0; i < data.length; i++) {
         var group = data[i];
         
         if (group["components"] != undefined && group["components"] != null && group["components"].length > 0){
@@ -331,7 +342,7 @@ function pieChartGroup(id, data, customTitle){
                 groupArray.push(jsonObject);
             }
         }
-    }
+    }*/
     
     $.each(groupArray, function (i, point) {
         point.y = point.count;

@@ -24,11 +24,22 @@ app.use('/api/v1', ResearcherController);
 var ResearcherSecureController = require(__root + 'researcher/ResearcherSecureController');
 app.use('/api/v1.1', ResearcherSecureController);
 
+/* API CÁLCULOS */
+
 var TweetCalculatedController = require(__root + 'tweetCalculated/TweetCalculatedController');
-app.use('/api/v1/tweets', TweetCalculatedController);
+app.use('/api/v1', TweetCalculatedController);
 
 var TweetLanguageCalculatedController = require(__root + 'tweetLanguageCalculated/TweetLanguageCalculatedController');
-app.use('/api/v1/tweetsLanguage', TweetLanguageCalculatedController);
+app.use('/api/v1', TweetLanguageCalculatedController);
+
+var GroupsCalculatedController = require(__root + 'groupsCalculated/GroupsCalculatedController');
+app.use('/api/v1', GroupsCalculatedController);
+
+var DepartmentsCalculatedController = require(__root + 'departmentsCalculated/DepartmentsCalculatedController');
+app.use('/api/v1', DepartmentsCalculatedController);
+
+var ResearchersCalculatedController = require(__root + 'researchersCalculated/ResearchersCalculatedController');
+app.use('/api/v1', ResearchersCalculatedController);
 
 app.use(express.static(path.join(__dirname, "public")));
 
