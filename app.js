@@ -41,6 +41,11 @@ app.use('/api/v1', DepartmentsCalculatedController);
 var ResearchersCalculatedController = require(__root + 'researchersCalculated/ResearchersCalculatedController');
 app.use('/api/v1', ResearchersCalculatedController);
 
+/* SISTEMA DE RECOMENDACIÓN */
+
+var RecommendationsController = require(__root + 'recommendations/RecommendationsController');
+app.use('/api/v1', RecommendationsController);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;

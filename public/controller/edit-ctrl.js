@@ -49,6 +49,94 @@ var app = angular.module("ResearcherManagerApp")
                 }, function(error){
                     swal("There are no researchers that match your search", null, "info");
                 });
+                
+                /**
+                * Sistema de recomendación
+                * 
+                */
+                
+                $http
+                    .get("/api/v1/recommendations/" + idResearcher)
+                    .then(function(response) {
+                        
+                        /* Investigadores recomendados */
+                        var researchers = response.data.researchers.split(",");
+                        
+                        /* Checks para comprobar el número de recomendaciones que debemos mostrar */
+                        $scope.checkRecommend1 = false;
+                        $scope.checkRecommend2 = false;
+                        $scope.checkRecommend3 = false;
+                        
+                        /* Elimino el propio identificador para no recomendar a el mismo. */
+                        researchers.remove(idResearcher);
+                        
+                        /* INVESTIGADOR 1 RECOMENDADO */
+                        if(typeof researchers[0] === 'undefined') {
+                            // does not exist
+                        }else {
+                            // does exist
+                            $http
+                                .get("/api/v1/researchers/" + researchers[0])
+                                .then(function(response) {
+                                    $scope.recommendation1 ={
+                                        idResearcher: response.data.idResearcher,
+                                        name : response.data.name
+                                    }
+                                    
+                                    $scope.checkRecommend1 = true;
+                                
+                            }, function(error){
+                                /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                            });
+                        }
+                        
+                        /* INVESTIGADOR 2 RECOMENDADO */
+                        if(typeof researchers[1] === 'undefined') {
+                            // does not exist
+                        }else {
+                            // does exist
+                            $http
+                                .get("/api/v1/researchers/" + researchers[1])
+                                .then(function(response) {
+                                    $scope.recommendation2 ={
+                                        idResearcher: response.data.idResearcher,
+                                        name : response.data.name
+                                    }
+                                    
+                                    $scope.checkRecommend2 = true;
+                                
+                            }, function(error){
+                                /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                            });
+                        }
+                        
+                        /* INVESTIGADOR 3 RECOMENDADO */
+                        if(typeof researchers[2] === 'undefined') {
+                            // does not exist
+                        }else {
+                            // does exist
+                            $http
+                                .get("/api/v1/researchers/" + researchers[2])
+                                .then(function(response) {
+                                    $scope.recommendation3 ={
+                                        idResearcher: response.data.idResearcher,
+                                        name : response.data.name
+                                    }
+                                    
+                                    $scope.checkRecommend3 = true;
+                                
+                            }, function(error){
+                                /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                            });
+                        }
+                        
+                        
+                    
+                }, function(error){
+                    /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                });
+                
+                
             }else{
                 $scope.updateResearcher={
                     idResearcher: "",
@@ -150,6 +238,16 @@ var app = angular.module("ResearcherManagerApp")
         refresh();
 }]);
 
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
 
 function isURL(s) {
    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
