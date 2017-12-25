@@ -41,7 +41,7 @@ app.use('/api/v1', DepartmentsCalculatedController);
 var ResearchersCalculatedController = require(__root + 'researchersCalculated/ResearchersCalculatedController');
 app.use('/api/v1', ResearchersCalculatedController);
 
-/* SISTEMA DE RECOMENDACIÓN */
+/* SISTEMA DE RECOMENDACION */
 
 var RecommendationsController = require(__root + 'recommendations/RecommendationsController');
 app.use('/api/v1', RecommendationsController);
