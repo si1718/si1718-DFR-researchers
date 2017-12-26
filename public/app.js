@@ -85,6 +85,11 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller : "GraphCtrl"
             })
             
+            .when("/newResearchers",{
+                templateUrl: "/view/listNewResearchers.html",
+                controller : "ListNewResearchersCtrl"
+            })
+            
             .when("/sections",{
                 templateUrl: "/view/sections.html",
                 controller : "SectionCtrl"

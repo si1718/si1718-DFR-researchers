@@ -114,6 +114,55 @@ router.post('/researchers', function (request, response) {
     }
 });
 
+/* Método POST que inserta un investigador en una collection */
+router.post('/researchersAuxiliar', function (request, response) {
+    var newResearcher = request.body;
+    if (!newResearcher) {
+        console.log("WARNING: New POST request to /researchers/ without researcher, sending 400...");
+        response.sendStatus(400); // bad request
+    } else {
+        console.log("INFO: New POST request to /researchers with body: " + JSON.stringify(newResearcher, 2, null));
+        if (!newResearcher.name || !newResearcher.idResearcher) {
+            console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " is not well-formed, sending 422...");
+            response.sendStatus(422); // unprocessable entity
+        } else {
+            researcherModel.findOne({idResearcher: newResearcher.orcid}, function (err, researcherAux) {
+                if (err) {
+                    console.error('WARNING: Error getting data from DB');
+                    response.sendStatus(500); // internal server error
+                } else {
+                    if (researcherAux) {
+                        console.log("WARNING: The researcher " + JSON.stringify(newResearcher, 2, null) + " already exists, sending 409...");
+                        response.sendStatus(409); // conflict
+                    } else {
+                        console.log("INFO: Adding researcher " + JSON.stringify(newResearcher, 2, null));
+                        
+                        researcherModel.create({
+                            idResearcher: request.body.idResearcher,
+                            name: request.body.name,
+                            phone: request.body.phone,
+                            orcid: request.body.orcid,
+                            researcherId: request.body.researcherId,
+                            link: request.body.link,
+                            idGroup: request.body.idGroup,
+                            professionalSituation: request.body.professionalSituation,
+                            keywords: request.body.keywords,
+                            viewURL: request.body.viewURL,
+                            idDepartment: request.body.idDepartment,
+                            departmentViewURL: request.body.departmentViewURL,
+                            departmentName: request.body.departmentName
+                        }, 
+                        function (err, user) {
+                            if (err) return response.status(500).send(err.message);
+                            response.sendStatus(201); // created
+                        });
+                    }
+                }
+            });
+        }
+    }
+});
+
 
 /* Método POST sobre un recurso */
 router.post('/researchers/:idResearcher', function (request, response) {

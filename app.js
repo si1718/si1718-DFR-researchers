@@ -46,6 +46,11 @@ app.use('/api/v1', ResearchersCalculatedController);
 var RecommendationsController = require(__root + 'recommendations/RecommendationsController');
 app.use('/api/v1', RecommendationsController);
 
+/* WEB SCRAPING CON INVESTIGADORES NUEVOS */
+
+var DailyResearcherController = require(__root + 'dailyResearchers/DailyResearcherController');
+app.use('/api/v1', DailyResearcherController);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
