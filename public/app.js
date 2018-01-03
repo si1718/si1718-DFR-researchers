@@ -95,6 +95,11 @@ angular.module("ResearcherManagerApp", ["ngRoute"])
                 controller : "SectionCtrl"
             })
             
+            .when("/keywords",{
+                templateUrl: "/view/keywords.html",
+                controller : "KeywordsCtrl"
+            })
+            
             .otherwise({
                 redirectTo: '/'
             }); 

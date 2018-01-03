@@ -51,6 +51,11 @@ app.use('/api/v1', RecommendationsController);
 var DailyResearcherController = require(__root + 'dailyResearchers/DailyResearcherController');
 app.use('/api/v1', DailyResearcherController);
 
+/* KEYWORDS */
+
+var KeywordsController = require(__root + 'keywords/KeywordsController');
+app.use('/api/v1', KeywordsController);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
