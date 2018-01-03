@@ -46,6 +46,9 @@ app.use('/api/v1', ResearchersCalculatedController);
 var RecommendationsController = require(__root + 'recommendations/RecommendationsController');
 app.use('/api/v1', RecommendationsController);
 
+var PatentsRecommendationsController = require(__root + 'patentsRecommendations/PatentsRecommendationsController');
+app.use('/api/v1', PatentsRecommendationsController);
+
 /* WEB SCRAPING CON INVESTIGADORES NUEVOS */
 
 var DailyResearcherController = require(__root + 'dailyResearchers/DailyResearcherController');

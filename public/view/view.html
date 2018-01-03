@@ -99,7 +99,7 @@
     </fieldset>
 </section>
 
-<h4 style="text-align: center;" ng-show="checkRecommend1">Te puede interesar también ...</h4>
+<h4 style="text-align: center;" ng-show="checkRecommend1">Investigadores recomendados</h4>
 
 <div class="row" style="text-align: center;">
     <div class="col-md-12">
@@ -108,5 +108,23 @@
         <a class="btn btn-info" href="#!/researchers/{{recommendation2.idResearcher}}/view" ng-show="checkRecommend2">{{recommendation2.name}}</a>
         &nbsp;
         <a class="btn btn-info" href="#!/researchers/{{recommendation3.idResearcher}}/view" ng-show="checkRecommend3">{{recommendation3.name}}</a>
+    </div>
+</div>
+
+<h4 style="text-align: center;" ng-show="checkRecommendPatent1">Patentes recomendadas</h4>
+
+<div class="row">
+    <div class="col-md-12">
+        <ol>
+            <li ng-show="checkRecommendPatent1">
+                <a href="https://si1718-rrv-patents.herokuapp.com/#!/patents/{{recommendationPatent1.idPatent}}">{{recommendationPatent1.name}}</a>
+            </li>
+            <li ng-show="checkRecommendPatent2">
+                <a href="https://si1718-rrv-patents.herokuapp.com/#!/patents/{{recommendationPatent2.idPatent}}">{{recommendationPatent2.name}}</a>
+            </li>
+            <li ng-show="checkRecommendPatent3">
+                <a href="https://si1718-rrv-patents.herokuapp.com/#!/patents/{{recommendationPatent3.idPatent}}">{{recommendationPatent3.name}}</a>
+            </li>
+        </ol>
     </div>
 </div>

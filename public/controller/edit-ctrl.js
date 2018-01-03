@@ -51,7 +51,7 @@ var app = angular.module("ResearcherManagerApp")
                 });
                 
                 /**
-                * Sistema de recomendación
+                * Sistema de recomendacion de investigadores
                 * 
                 */
                 
@@ -124,6 +124,94 @@ var app = angular.module("ResearcherManagerApp")
                                     }
                                     
                                     $scope.checkRecommend3 = true;
+                                
+                            }, function(error){
+                                /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                            });
+                        }
+                        
+                        
+                    
+                }, function(error){
+                    /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                });
+                
+                /**
+                * Sistema de recomendacion de patentes
+                * 
+                */
+                
+                $http
+                    .get("/api/v1/patentsRecommendations/" + idResearcher)
+                    .then(function(response) {
+                        
+                        /* Patentes recomendadas */
+                        var patents = [];
+                        
+                        $.each(response.data, function( index, value ) {
+                          console.log( index + ": " + value.idPatent );
+                          patents.push(value.idPatent);
+                        });
+                        
+                        /* Checks para comprobar el número de recomendaciones que debemos mostrar */
+                        $scope.checkRecommendPatent1 = false;
+                        $scope.checkRecommendPatent2 = false;
+                        $scope.checkRecommendPatent3 = false;
+                        
+                        /* PATENTE 1 RECOMENDADO */
+                        if(typeof patents[0] === 'undefined') {
+                            // does not exist
+                        }else {
+                            // does exist
+                            $http
+                                .get("https://si1718-rrv-patents.herokuapp.com/api/v1/patents/" + patents[0])
+                                .then(function(response) {
+                                    $scope.recommendationPatent1 ={
+                                        idPatent: response.data.idPatent,
+                                        name : response.data.title
+                                    }
+                                    
+                                    $scope.checkRecommendPatent1 = true;
+                                
+                            }, function(error){
+                                /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                            });
+                        }
+                        
+                        /* PATENTE 2 RECOMENDADO */
+                        if(typeof patents[1] === 'undefined') {
+                            // does not exist
+                        }else {
+                            // does exist
+                            $http
+                                .get("https://si1718-rrv-patents.herokuapp.com/api/v1/patents/" + patents[1])
+                                .then(function(response) {
+                                    $scope.recommendationPatent2 ={
+                                        idPatent: response.data.idPatent,
+                                        name : response.data.title
+                                    }
+                                    
+                                    $scope.checkRecommendPatent2 = true;
+                                
+                            }, function(error){
+                                /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
+                            });
+                        }
+                        
+                        /* PATENTE 3 RECOMENDADO */
+                        if(typeof patents[2] === 'undefined') {
+                            // does not exist
+                        }else {
+                            // does exist
+                            $http
+                                .get("https://si1718-rrv-patents.herokuapp.com/api/v1/patents/" + patents[2])
+                                .then(function(response) {
+                                    $scope.recommendationPatent3 ={
+                                        idPatent: response.data.idPatent,
+                                        name : response.data.title
+                                    }
+                                    
+                                    $scope.checkRecommendPatent3 = true;
                                 
                             }, function(error){
                                 /* No hay recomendaciones o hubo algún tipo de problema durante la petición. */
