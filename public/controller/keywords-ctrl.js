@@ -33,6 +33,22 @@ angular.module("ResearcherManagerApp")
                         }
                     }
                 });
+                
+            $http
+                .get("/api/v1/wordsCloud")
+                .then(function(response) {
+                    
+                    $scope.wordsCloud = response.data;
+                    
+                    if( !$scope.wordsCloud ) {
+                        swal("There are no keywords", null, "info");
+                    }else{
+                        $("#wordsCloud").jQCloud($scope.wordsCloud, {
+                          width: 650,
+                          height: 350
+                        });
+                    }
+                });
 
         }
         

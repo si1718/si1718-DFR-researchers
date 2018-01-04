@@ -59,6 +59,11 @@ app.use('/api/v1', DailyResearcherController);
 var KeywordsController = require(__root + 'keywords/KeywordsController');
 app.use('/api/v1', KeywordsController);
 
+/* NUBE DE PALABRAS (KEYWORDS) */
+
+var WordsCloudController = require(__root + 'wordsCloud/WordsCloudController');
+app.use('/api/v1', WordsCloudController);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
