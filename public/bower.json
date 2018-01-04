@@ -20,6 +20,7 @@
     "angular-route": "^1.6.6",
     "bootstrap-sweetalert": "latest",
     "auth0-lock": "latest",
-    "jquery": "latest"
+    "jquery": "latest",
+    "jqcloud2": "latest"
   }
 }
