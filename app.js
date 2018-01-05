@@ -64,6 +64,9 @@ app.use('/api/v1', KeywordsController);
 var WordsCloudController = require(__root + 'wordsCloud/WordsCloudController');
 app.use('/api/v1', WordsCloudController);
 
+var WordsCloudControllerV2 = require(__root + 'wordsCloudV2/WordsCloudControllerV2');
+app.use('/api/v1', WordsCloudControllerV2);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
