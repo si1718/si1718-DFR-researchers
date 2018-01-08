@@ -56,7 +56,7 @@ var app = angular.module("ResearcherManagerApp")
                 */
                 
                 $http
-                    .get("/api/v1/recommendations/" + idResearcher)
+                    .get("/api/v1/researchers/recommendations/" + idResearcher)
                     .then(function(response) {
                         
                         /* Investigadores recomendados */

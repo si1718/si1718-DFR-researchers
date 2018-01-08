@@ -7,7 +7,7 @@ var recommendationsModel = require('./Recommendations');
 router.use(bodyParser.json());
 
 /* Método GET que devuelve todas las recomendaciones */
-router.get('/recommendations', function (request, response) {
+router.get('/researchers/recommendations', function (request, response) {
     var query = {};
     
     console.log("INFO: New GET request to /recommendations");
@@ -24,7 +24,7 @@ router.get('/recommendations', function (request, response) {
 });
 
 /* Método GET que devuelve todos las recomendaciones filtrado por idResearcher */
-router.get('/recommendations/:idResearcher', function (request, response) {
+router.get('/researchers/recommendations/:idResearcher', function (request, response) {
     var idResearcher = request.params.idResearcher;
     if (!idResearcher) {
         console.log("WARNING: New GET request to /recommendations/:idResearcher without idResearcher, sending 400...");
